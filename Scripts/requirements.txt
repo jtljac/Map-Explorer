@@ -1,0 +1,4 @@
+cymysql
+pillow
+requests
+requests-toolbelt
