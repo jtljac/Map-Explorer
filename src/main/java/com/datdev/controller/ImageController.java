@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public class ImageController {
     public static final String basePath = "./maps/";
 
-    static final Pattern fileNamePattern = Pattern.compile("[\\w _\\-)`(\\[\\]*]{3,20}\\.(png|jpg)");
+    static final Pattern fileNamePattern = Pattern.compile("[\\w _\\-)`(\\[\\]*]{4,20}\\.(png|jpg)");
     final static Pattern searchTagPattern = Pattern.compile("\\w{3,30}|\\-\\w{3,30}", Pattern.CASE_INSENSITIVE);
 
 
