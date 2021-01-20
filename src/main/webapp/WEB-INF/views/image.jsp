@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
     <head>
-        <link href="css/stylesheet.css" rel="stylesheet">
-        <script src="js/AJAX.js"></script>
-        <script src="js/tags.js"></script>
+        <link href="CSS/stylesheet.css" rel="stylesheet">
+        <script type="text/javascript" src="JS/AJAX.js"></script>
+        <script type="text/javascript" src="JS/tags.js"></script>
         <title>${map.getNameWithoutExtension()}</title>
     </head>
     <body>

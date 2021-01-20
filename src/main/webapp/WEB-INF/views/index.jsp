@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
     <head>
-        <link href="css/stylesheet.css" rel="stylesheet">
+        <link href="CSS/stylesheet.css" rel="stylesheet">
         <title>Battle map Finder</title>
     </head>
     <body>
