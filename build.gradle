@@ -2,10 +2,11 @@ plugins {
 	id 'org.springframework.boot' version '2.4.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'war'
 }
 
 group = 'com.datdev'
-version = '0.0.4'
+version = '0.0.5'
 sourceCompatibility = '11'
 
 repositories {
