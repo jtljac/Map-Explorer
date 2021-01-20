@@ -10,7 +10,7 @@ import java.util.Set;
 public interface MapRepo extends CrudRepository<Map, Integer> {
     List<Map> findDistinctByTagsIn(Set<String> tags);
 
-    @Query(value = "SELECT DISTINCT tag FROM Tags ORDER BY tag ASC", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT tag FROM tags ORDER BY tag ASC", nativeQuery = true)
     List<String> findDistinctTags();
 
     boolean existsByImageHash(String hash);
