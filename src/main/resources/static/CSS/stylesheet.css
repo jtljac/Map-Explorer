@@ -1,0 +1,122 @@
+main {
+    max-width: 100%;
+    padding: 10px;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.galleryItem {
+    overflow: hidden;
+    flex: 1 0 100%;
+    max-width: 100%;
+    width: 100%;
+    padding: 12px;
+    height: 400px;
+    display: flex;
+    box-sizing: border-box;
+}
+
+@media (min-width: 750px) {
+    .galleryItem {
+        flex: 1 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (min-width: 950px) {
+    .galleryItem {
+        flex: 1 0 33.333333333%;
+        max-width: 33.333333333%;
+    }
+}
+
+@media (min-width: 1250px) {
+    .galleryItem {
+        flex: 1 0 25%;
+        max-width: 25%;
+    }
+}
+
+@media (min-width: 1500px) {
+    .galleryItem {
+        flex: 1 0 20%;
+        max-width: 20%;
+    }
+}
+
+.galleryItem h2 {
+    max-width: 100%;
+    border-bottom: 1px red solid;
+}
+
+.galleryItem a {
+    flex: auto;
+    max-width: 100%;
+    text-decoration: inherit;
+    color: inherit;
+
+    display: flex;
+    flex-flow: column;
+}
+
+.galleryItem .imgwrap {
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    display: flex;
+    margin: auto;
+    width: 100%;
+}
+
+.galleryItem a .imgwrap img {
+    width: 100%;
+    height: auto;
+    transition-duration: .2s;
+}
+
+.galleryItem a:hover .imgwrap .scaleOut {
+    transform: scale(0.8);
+}
+
+.galleryItem a:hover .imgwrap .scaleIn {
+    transform: scale(1.2);
+}
+
+.bigImage {
+    max-width: 100%;
+    object-fit: scale-down;
+}
+
+.tagWrap {
+    border: 1px solid grey;
+    cursor: text;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px;
+}
+
+.tagInput {
+    border: none;
+    flex: 1 1 0;
+    padding: 8px;
+}
+
+.tagObject {
+    padding: 6px 16px;
+    margin: 0 4px;
+    border-radius: 5px;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+
+.tagObject::after {
+    content: ' \00d7';
+}
+
+.tagButton {
+
+}
