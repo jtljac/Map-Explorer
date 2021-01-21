@@ -3,6 +3,7 @@ package com.datdev.controller;
 import com.datdev.model.Image;
 import com.datdev.model.Map;
 import com.datdev.repo.MapRepo;
+import com.datdev.utils.SearchUtils;
 import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,13 @@ import java.util.regex.Pattern;
 public class ImageController {
     public static final String basePath = "./maps/";
 
-    static final Pattern fileNamePattern = Pattern.compile("[\\w _\\-)`(\\[\\]*]{4,20}\\.(png|jpg)");
-    final static Pattern searchTagPattern = Pattern.compile("\\w{3,30}|\\-\\w{3,30}", Pattern.CASE_INSENSITIVE);
+    static final Pattern fileNamePattern = Pattern.compile("[\\w _\\-)`(\\[\\]*]{4,50}\\.(png|jpg)");
+
+    final static Pattern searchLikeTagPattern = Pattern.compile("\\w{3,30}", Pattern.CASE_INSENSITIVE);
+    final static Pattern searchNotLikeTagPattern = Pattern.compile("-(\\w{3,30})", Pattern.CASE_INSENSITIVE);
+    final static Pattern searchExactlyTagPattern = Pattern.compile("\"(\\w{3,30})\"", Pattern.CASE_INSENSITIVE);
+    final static Pattern searchGridTagPattern = Pattern.compile("([<>]?[\\d*]+?)x([<>]?[\\d*]+)", Pattern.CASE_INSENSITIVE);
+    final static Pattern searchUserTagPattern = Pattern.compile("uploader:([\\w_-]{1,30})", Pattern.CASE_INSENSITIVE);
 
 
     @Autowired
@@ -44,40 +50,81 @@ public class ImageController {
     private EntityManagerFactory emf;
 
     @GetMapping("/")
-    public String index(Model model, @RequestParam(required = false) Optional<String> search, @RequestParam(required = false) Optional<Integer> page, @RequestParam(required = false) Optional<Integer> numPerPage) {
+    public String index(Model model,
+                        @RequestParam(required = false, defaultValue = "") String search,
+                        @RequestParam(required = false, defaultValue = "1") Integer page,
+                        @RequestParam(required = false, defaultValue = "50") Integer numPerPage) {
         List<Map> maps;
 
-        String[] params = search.orElse("").split("\\s+");
+        String[] params = search.split("\\s+");
         StringBuilder sql = new StringBuilder();
+        StringBuilder notSQL = new StringBuilder();
 
         boolean first = true;
+        boolean firstNegative = true;
+
+        Matcher match;
         for (String param : params) {
-            Matcher matcher = searchTagPattern.matcher(param);
-            if (matcher.matches()) {
-                if (!first) {
-                    sql.append(" OR");
+            String pattern = "";
+            boolean negative = false;
+
+            if ((match = searchGridTagPattern.matcher(param)).matches()) {
+                pattern = "(squareWidth " + SearchUtils.parseSquare(match.group(1)) + " AND squareHeight " + SearchUtils.parseSquare(match.group(2)) + ")";
+            } else if ((match = searchUserTagPattern.matcher(param)).matches()) {
+                pattern = " uploader = '" + param + "'";
+            } else if ((match = searchLikeTagPattern.matcher(param)).matches()) {
+                pattern = " tag LIKE '%" + param + "%'";
+            } else if ((match = searchNotLikeTagPattern.matcher(param)).matches()) {
+                pattern = " tag NOT LIKE '%" + match.group(1) + "%'";
+                negative = true;
+            } else if ((match = searchExactlyTagPattern.matcher(param)).matches()) {
+                pattern = " tag " + " = \"" + match.group(1) + "\"";
+            }
+
+            if (!pattern.isEmpty()) {
+                if (negative) {
+                    if (!firstNegative) {
+                        notSQL.append(" OR");
+                    } else {
+                        firstNegative = false;
+                    }
+
+                    notSQL.append(pattern);
                 } else {
-                    sql.append(" WHERE");
-                    first = false;
+                    if (!first) {
+                        sql.append(" OR");
+                    } else {
+                        first = false;
+                    }
+
+                    sql.append(pattern);
                 }
-                sql.append(" tag ").append(param.charAt(0) == '-' ? "not" : "").append(" LIKE '%").append(param).append("%'");
             }
         }
 
-        if (!sql.toString().isEmpty()) {
+        String sqlString = "SELECT DISTINCT id, filePath, width, height, squareWidth, squareHeight, uploader, uploadDate " +
+                "from maps left outer join tags on maps.id=tags.mapID ";
 
+        String theSQL = sql.toString();
+        String theNotSQL = notSQL.toString();
 
-            EntityManager em = emf.createEntityManager();
-
-            maps = (List<Map>) em.createNativeQuery("SELECT DISTINCT id, filePath, width, height, squareWidth, squareHeight, uploader, uploadDate from maps left outer join tags on maps.id=tags.mapID" + sql.toString()).unwrap(org.hibernate.query.Query.class).setResultTransformer(Transformers.aliasToBean(Map.class)).getResultList();
-        } else {
-
-            maps = (List<Map>) mapRepository.findAll();
+        if (!theSQL.isEmpty() || !theNotSQL.isEmpty()) {
+            sqlString += "WHERE";
+            if (!theSQL.isEmpty()) sqlString += "(" + sql.toString() + ") ";
+            if (!theSQL.isEmpty() && !theNotSQL.isEmpty()) sqlString += "AND";
+            if (!theNotSQL.isEmpty()) sqlString += " id NOT IN" +
+                    "(SELECT DISTINCT id " +
+                    "FROM maps left outer join tags on maps.id=tags.mapID " +
+                    "WHERE" + notSQL.toString() + ")";
         }
 
-        int theNumPerPage = numPerPage.orElse(50);
+        EntityManager em = emf.createEntityManager();
+
+        maps = (List<Map>) em.createNativeQuery(sqlString).unwrap(org.hibernate.query.Query.class).setResultTransformer(Transformers.aliasToBean(Map.class)).getResultList();
+
+        int theNumPerPage = Math.max(20, numPerPage);
         int pages = maps.size() / theNumPerPage;
-        int thePage = Math.min(pages, page.orElse(1) - 1);
+        int thePage = Math.min(pages, page - 1);
 
         int start = thePage * theNumPerPage;
         int end = (thePage < pages ? (thePage + 1) * theNumPerPage : maps.size());
@@ -85,7 +132,8 @@ public class ImageController {
         model.addAttribute("maps", maps.subList(start, end));
         model.addAttribute("basePath", basePath);
         model.addAttribute("page", thePage);
-        model.addAttribute("numPerPage", (Math.max(1, theNumPerPage)));
+        model.addAttribute("query", search);
+        model.addAttribute("numPerPage", (theNumPerPage));
         return "/index";
     }
 

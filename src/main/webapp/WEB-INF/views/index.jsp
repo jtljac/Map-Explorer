@@ -5,15 +5,15 @@
         <title>Battle map Finder</title>
     </head>
     <body>
-        <main class="descriptive">
-            <h1>Test</h1>
-            <p>this is a test</p>
-            <input id="searchText" type="text" placeholder="Search for some tags"/><button id="search" type="submit">Search</button>
+        <main>
+            <input id="searchText" value="${query}"  type="text" placeholder="Search for some tags"/><button id="search" type="submit">Search</button>
             <div class="gallery">
                 <c:forEach items="${maps}" var="map">
                     <div class="galleryItem">
                         <a href = "/image?id=${map.id}">
-                            <h2>${map.getNameWithoutExtension()}</h2>
+                            <div class="titleWrap">
+                                <h2>${map.getNameWithoutExtension()}</h2>
+                            </div>
                             <p>${map.width}x${map.height}</p>
                             <div class="imgwrap">
                                 <img class="<c:out default="None" value="${map.height > map.width ? 'scaleOut' : 'scaleIn'}"/>" src="${basePath}${map.filePath}"/>

@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+body {
+    background: #121212;
+    color: #ffffff;
+    font-family: "Open Sans", Sans-Serif, serif;
+}
+
 main {
     max-width: 100%;
     padding: 10px;
@@ -10,56 +18,67 @@ main {
 
 .galleryItem {
     overflow: hidden;
-    flex: 1 0 100%;
-    max-width: 100%;
+    flex: 1 0 20%;
+    max-width: 20%;
     width: 100%;
-    padding: 12px;
+    padding: 6px;
     height: 400px;
     display: flex;
     box-sizing: border-box;
 }
 
-@media (min-width: 750px) {
-    .galleryItem {
-        flex: 1 0 50%;
-        max-width: 50%;
-    }
-}
-
-@media (min-width: 950px) {
-    .galleryItem {
-        flex: 1 0 33.333333333%;
-        max-width: 33.333333333%;
-    }
-}
-
-@media (min-width: 1250px) {
+@media (max-width: 1500px) {
     .galleryItem {
         flex: 1 0 25%;
         max-width: 25%;
     }
 }
 
-@media (min-width: 1500px) {
+@media (max-width: 1250px) {
     .galleryItem {
-        flex: 1 0 20%;
-        max-width: 20%;
+        flex: 1 0 33.33333333%;
+        max-width: 33.33333333%;
+    }
+}
+
+
+@media (max-width: 950px) {
+    .galleryItem {
+        flex: 1 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 650px) {
+    .galleryItem {
+        flex: 1 0 100%;
+        max-width: 100%;
     }
 }
 
 .galleryItem h2 {
-    max-width: 100%;
     border-bottom: 1px red solid;
+}
+
+.galleryItem .TitleWrap {
+    width: 100%;
+    height: fit-content;
 }
 
 .galleryItem a {
     flex: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-flow: column;
+
     max-width: 100%;
+    background-color: rgba(255, 255, 255, 0.11);
+    padding: 8px;
+    border-radius: 5px;
+
     text-decoration: inherit;
     color: inherit;
 
-    display: flex;
-    flex-flow: column;
 }
 
 .galleryItem .imgwrap {
