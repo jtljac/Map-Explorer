@@ -22,9 +22,11 @@
         </main>
         <div id="test"></div>
         <script>
-            tag = new Tag(document.getElementById("tags"), document.getElementById("tagsButton"));
+            const tag = new Tag(document.getElementById("tags"), document.getElementById("tagsButton"));
             ajaxSimpleGet("/getTags", function (response) {
-                tag.tagOptions = JSON.parse(response.responseText);
+                if (response.readyState === 4) {
+                    tag.tagOptions = JSON.parse(response.responseText);
+                }
             })
         </script>
     </body>

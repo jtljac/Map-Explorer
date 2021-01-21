@@ -2,31 +2,24 @@
 <html>
     <head>
         <link href="CSS/stylesheet.css" rel="stylesheet">
+        <script src="JS/nav.js"></script>
+        <script src="JS/search.js"></script>
+        <script src="JS/AJAX.js"></script>
         <title>Battle map Finder</title>
     </head>
     <body>
+        <nav>
+
+        </nav>
         <main>
-            <input id="searchText" value="${query}"  type="text" placeholder="Search for some tags"/><button id="search" type="submit">Search</button>
-            <div class="gallery">
-                <c:forEach items="${maps}" var="map">
-                    <div class="galleryItem">
-                        <a href = "/image?id=${map.id}">
-                            <div class="titleWrap">
-                                <h2>${map.getNameWithoutExtension()}</h2>
-                            </div>
-                            <p>${map.width}x${map.height}</p>
-                            <div class="imgwrap">
-                                <img class="<c:out default="None" value="${map.height > map.width ? 'scaleOut' : 'scaleIn'}"/>" src="${basePath}${map.filePath}"/>
-                            </div>
-                        </a>
-                    </div>
-                </c:forEach>
+            <input id="searchText" value="${search}"  type="text" placeholder="Search for some tags"/><button id="search" type="submit">Search</button>
+            <div id="gallery" class="gallery" onload="">
             </div>
         </main>
     <script>
         let button = document.getElementById("search")
         button.addEventListener("click", function () {
-           window.open("?search=" + document.getElementById("searchText").value, "_self");
+           openWithParams("/", {"search": document.getElementById("searchText").value})
         });
 
         document.getElementById("searchText").addEventListener("keydown", function (e) {
@@ -34,6 +27,8 @@
                 button.click();
             }
         })
+
+        const search = new Search(document.getElementById("gallery"), "${basePath}", ${offset}, ${numPerPage}, "${search}");
     </script>
     </body>
 </html>

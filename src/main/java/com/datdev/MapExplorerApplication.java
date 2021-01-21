@@ -18,8 +18,7 @@ import java.util.List;
 
 @SpringBootApplication
 public class MapExplorerApplication {
-	@Autowired
-	MapRepo mapRepository;
+    public static final String basePath = "./maps/";
 
 	public static void main(String[] args) {
 		SpringApplication.run(MapExplorerApplication.class, args);

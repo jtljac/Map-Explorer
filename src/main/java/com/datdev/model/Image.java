@@ -2,6 +2,7 @@ package com.datdev.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Image {
@@ -13,7 +14,7 @@ public class Image {
 
     public Integer squareHeight;
 
-    public List<String> tags;
+    public List<String> tags = new ArrayList<>();
 
     public MultipartFile getImage() {
         return image;

@@ -56,15 +56,6 @@ main {
     }
 }
 
-.galleryItem h2 {
-    border-bottom: 1px red solid;
-}
-
-.galleryItem .TitleWrap {
-    width: 100%;
-    height: fit-content;
-}
-
 .galleryItem a {
     flex: auto;
     display: flex;
@@ -88,6 +79,7 @@ main {
     display: flex;
     margin: auto;
     width: 100%;
+    height: 100%;
 }
 
 .galleryItem a .imgwrap img {

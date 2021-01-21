@@ -38,7 +38,7 @@ public class Map {
     @Column(name="imageHash")
     String imageHash;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "mapID"))
     @Column(name = "tag")
     List<String> tags = new ArrayList<>();
