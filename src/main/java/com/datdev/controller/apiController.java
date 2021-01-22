@@ -122,7 +122,7 @@ public class apiController {
             return new ResponseEntity<>("02 - Your username is bad and you should feel bad", HttpStatus.BAD_REQUEST);
         }
 
-        String directory = "uploaded/" + image.name;
+        String directory = "uploaded/" + image.name + "/";
         BufferedImage bufferedImage = ImageIO.read(image.image.getInputStream());
 
         Path path = Paths.get(MapExplorerApplication.basePath + directory);
