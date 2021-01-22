@@ -40,3 +40,4 @@ venv/
 .vscode/
 
 /maps/
+src/main/resources/application.properties
