@@ -1,15 +1,81 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
+.material-icons.md-light {
+    color: rgba(255, 255, 255, 1);
+}
+
 body {
     background: #121212;
     color: #ffffff;
     font-family: "Open Sans", Sans-Serif, serif;
+    margin: 0;
 }
 
 main {
     max-width: 100%;
     padding: 10px;
 }
+
+nav {
+    height: 30px;
+    background-color: #363636;
+    position: sticky;
+    border-radius: 0 0 8px 8px;
+    padding: 12px;
+    top: 0;
+    z-index: 100;
+    display: flex;
+
+}
+
+nav input[type="text"] {
+    flex: 100%;
+    margin: 0 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-radius: 20px;
+    text-indent: 10px;
+    border: 0 rgba(255, 255, 255, 0) solid;
+    transition: 0.1s ease-in;
+}
+
+nav input[type="text"]:focus {
+    outline: 0;
+    border: 1px rgba(255, 255, 255, 0.20) solid;
+}
+
+nav input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, .6);
+}
+
+nav button {
+    border-radius: 20px;
+    width: 60px;
+    height: 30px;
+    transition: 0.1s ease-in;
+    background-color: rgba(255, 255, 255, 0);
+    border: 0 rgba(255, 255, 255, 0) solid;
+}
+
+nav button:focus {
+    border: 0;
+    outline: 0;
+}
+
+@media (hover) {
+    nav button:hover {
+        background-color: rgba(255, 255, 255, 0.19);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+    }
+
+    nav input[type="text"]:hover {
+        background-color: rgba(255, 255, 255, 0.17);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+
+        text-indent: 10px;
+    }
+}
+
 
 .gallery {
     display: flex;
@@ -27,40 +93,8 @@ main {
     box-sizing: border-box;
 }
 
-@media (max-width: 1500px) {
-    .galleryItem {
-        flex: 1 0 25%;
-        max-width: 25%;
-    }
-}
-
-@media (max-width: 1250px) {
-    .galleryItem {
-        flex: 1 0 33.33333333%;
-        max-width: 33.33333333%;
-    }
-}
-
-
-@media (max-width: 950px) {
-    .galleryItem {
-        flex: 1 0 50%;
-        max-width: 50%;
-    }
-}
-
-@media (max-width: 650px) {
-    .galleryItem {
-        flex: 1 0 100%;
-        max-width: 100%;
-    }
-}
-
 .galleryItem a {
     flex: auto;
-    display: flex;
-    flex-wrap: nowrap;
-    flex-flow: column;
 
     max-width: 100%;
     background-color: rgba(255, 255, 255, 0.11);
@@ -69,7 +103,8 @@ main {
 
     text-decoration: inherit;
     color: inherit;
-
+    transition: .1s ease-in;
+    border: 0 rgba(255, 255, 255, 0.0) solid;
 }
 
 .galleryItem .imgwrap {
@@ -83,17 +118,57 @@ main {
 }
 
 .galleryItem a .imgwrap img {
+    transition: .1s ease-in;
+    height: 100%;
     width: 100%;
-    height: auto;
-    transition-duration: .2s;
+    object-fit: contain;
 }
 
-.galleryItem a:hover .imgwrap .scaleOut {
-    transform: scale(0.8);
+@media (hover) {
+    .galleryItem a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 2px rgba(255, 255, 255, 0.15) solid;
+    }
+
+    .galleryItem a:hover .imgwrap img {
+        transform: scale(1.2);
+    }
 }
 
-.galleryItem a:hover .imgwrap .scaleIn {
-    transform: scale(1.2);
+@media only screen and (max-width: 1500px) {
+    .galleryItem {
+        flex: 1 0 25%;
+        max-width: 25%;
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    .galleryItem {
+        flex: 1 0 33.33333333%;
+        max-width: 33.33333333%;
+    }
+}
+
+
+@media only screen and (max-width: 950px) {
+    .galleryItem {
+        flex: 1 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .galleryItem {
+        flex: 1 0 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .galleryItem a .imgwrap .tall {
+        height:auto;
+        width: 100%;
+        object-fit: none;
+    }
 }
 
 .bigImage {
