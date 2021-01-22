@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 @Controller
 public class apiController {
     static final Pattern fileNamePattern = Pattern.compile("[\\w _\\-)`(\\[\\]*]{4,50}\\.(png|jpg)");
+    static final Pattern userNamePattern = Pattern.compile("[\\w_-]{1,25}");
 
     @Autowired
     MapRepo mapRepository;
@@ -111,14 +112,17 @@ public class apiController {
 
         String name = image.image.getOriginalFilename();
 
-        Matcher fileName = fileNamePattern.matcher(name);
-
-        if(!fileName.matches()) {
+        if(!fileNamePattern.matcher(name).matches()) {
             System.out.println(name + " is a really bad name, discarding");
             return new ResponseEntity<>("01 - Bad name format, please clean it up", HttpStatus.BAD_REQUEST);
         }
 
-        String directory = "uploaded/";
+        if (!userNamePattern.matcher(image.name).matches()) {
+            System.out.println(image.name + " is a really bad username, discarding");
+            return new ResponseEntity<>("02 - Your username is bad and you should feel bad", HttpStatus.BAD_REQUEST);
+        }
+
+        String directory = "uploaded/" + image.name;
         BufferedImage bufferedImage = ImageIO.read(image.image.getInputStream());
 
         Path path = Paths.get(MapExplorerApplication.basePath + directory);
@@ -134,7 +138,7 @@ public class apiController {
             Files.copy(is, filePath);
         } catch (InvalidFileNameException e) {
             System.out.println("There is Somehow 2,147,483,647 files with the name" + name + ", this request was rejected");
-            return new ResponseEntity<>("02 - Somehow there are already 2,147,483,648 files with that name, try a different one", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("03 - Somehow there are already 2,147,483,648 files with that name, try a different one", HttpStatus.BAD_REQUEST);
         }
 
         Map map = new Map(directory + name, bufferedImage.getWidth(), bufferedImage.getHeight(), image.squareWidth, image.squareHeight, image.name, imageHash);
