@@ -59,11 +59,6 @@ public class Map {
         return filePath.substring(filePath.lastIndexOf("/") + 1);
     }
 
-    public String getNameWithoutExtension() {
-        int temp = getName().lastIndexOf(".");
-        return (temp == -1 ? getName() : getName().substring(0, temp));
-    }
-
     public int getId() {
         return id;
     }

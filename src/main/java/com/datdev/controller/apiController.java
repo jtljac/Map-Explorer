@@ -3,6 +3,7 @@ package com.datdev.controller;
 import com.datdev.MapExplorerApplication;
 import com.datdev.model.Image;
 import com.datdev.model.Map;
+import com.datdev.model.MapReduced;
 import com.datdev.repo.MapRepo;
 import com.datdev.utils.FileUtil;
 import com.datdev.utils.SearchUtils;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Controller
 public class apiController {
@@ -59,9 +61,9 @@ public class apiController {
 
     @GetMapping(value = "/getImages", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<List<Map>> getImages( @RequestParam(required = false, defaultValue = "") String search,
-                                                @RequestParam(required = false, defaultValue = "0") int offset,
-                                                @RequestParam(required = false, defaultValue = "50") int numPerPage) {
+    public ResponseEntity<List<MapReduced>> getImages(@RequestParam(required = false, defaultValue = "") String search,
+                                                      @RequestParam(required = false, defaultValue = "0") int offset,
+                                                      @RequestParam(required = false, defaultValue = "30") int numPerPage) {
         EntityManager em = emf.createEntityManager();
 
         int theNumPerPage = Math.max(numPerPage, 0);
@@ -74,9 +76,13 @@ public class apiController {
         System.out.println("Getting Maps");
         List<Map> maps = em.createNativeQuery(sqlString, Map.class).getResultList();
 
-        if (maps.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-        return new ResponseEntity<>(maps, HttpStatus.OK);
+        ResponseEntity<List<MapReduced>> entity;
+        if (maps.isEmpty()) entity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else entity = new ResponseEntity<>(maps.stream().map(MapReduced::new).collect(Collectors.toList()), HttpStatus.OK);
+
+        em.close();
+        return entity;
     }
 
     @PostMapping("/setTags")
@@ -123,7 +129,6 @@ public class apiController {
         }
 
         String directory = "uploaded/" + image.name + "/";
-        BufferedImage bufferedImage = ImageIO.read(image.image.getInputStream());
 
         Path path = Paths.get(MapExplorerApplication.basePath + directory);
 
@@ -140,6 +145,8 @@ public class apiController {
             System.out.println("There is Somehow 2,147,483,647 files with the name" + name + ", this request was rejected");
             return new ResponseEntity<>("03 - Somehow there are already 2,147,483,648 files with that name, try a different one", HttpStatus.BAD_REQUEST);
         }
+
+        BufferedImage bufferedImage = ImageIO.read(image.image.getInputStream());
 
         Map map = new Map(directory + name, bufferedImage.getWidth(), bufferedImage.getHeight(), image.squareWidth, image.squareHeight, image.name, imageHash);
 
