@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -136,11 +135,11 @@ public class apiController {
             Files.createDirectories(path);
         }
 
+        String fileName;
         String[] theName = name.split("\\.");
         try (InputStream is = image.image.getInputStream()) {
-
-            Path filePath = FileUtil.getUnownedPath(path, theName[0], theName[1]);
-            Files.copy(is, filePath);
+            fileName = FileUtil.getUnownedFileName(path, theName[0], theName[1]);
+            Files.copy(is, path.resolve(fileName));
         } catch (InvalidFileNameException e) {
             System.out.println("There is Somehow 2,147,483,647 files with the name" + name + ", this request was rejected");
             return new ResponseEntity<>("03 - Somehow there are already 2,147,483,648 files with that name, try a different one", HttpStatus.BAD_REQUEST);
@@ -148,7 +147,7 @@ public class apiController {
 
         BufferedImage bufferedImage = ImageIO.read(image.image.getInputStream());
 
-        Map map = new Map(directory + name, bufferedImage.getWidth(), bufferedImage.getHeight(), image.squareWidth, image.squareHeight, image.name, imageHash);
+        Map map = new Map(directory + fileName, bufferedImage.getWidth(), bufferedImage.getHeight(), image.squareWidth, image.squareHeight, image.name, imageHash);
 
         for (String tag : image.tags) {
             map.addTag(tag);

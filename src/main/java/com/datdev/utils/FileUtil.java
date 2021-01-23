@@ -6,15 +6,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileUtil {
-    public static Path getUnownedPath(Path basePath, String name, String extension) throws InvalidFileNameException {
-        Path thePath = basePath.resolve(name + "." + extension);
+    public static String getUnownedFileName(Path directory, String name, String extension) throws InvalidFileNameException {
+        String theName = name + "." + extension;
+        Path thePath = directory.resolve(theName);
         if (!Files.exists(thePath)) {
-            return thePath;
+            return theName;
         }
 
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
-            thePath = basePath.resolve(name + i + "." + extension);
-            if (!Files.exists(thePath)) return thePath;
+            theName = name + i + "." + extension;
+            thePath = directory.resolve(theName);
+            if (!Files.exists(thePath)) return theName;
         }
 
         throw new InvalidFileNameException("FFS", "FFS");
