@@ -2,6 +2,7 @@ package com.datdev.controller;
 
 import com.datdev.MapExplorerApplication;
 import com.datdev.model.Map;
+import com.datdev.repo.DuplicateRepo;
 import com.datdev.repo.MapRepo;
 import com.datdev.utils.SearchUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import java.util.regex.Pattern;
 public class ImageController {
     @Autowired
     MapRepo mapRepository;
+
+    @Autowired
+    DuplicateRepo duplicateRepo;
 
     @GetMapping("/")
     public String index(Model model,
@@ -43,5 +47,12 @@ public class ImageController {
         model.addAttribute("map", map.get());
         model.addAttribute("basePath", MapExplorerApplication.basePath);
         return "/image";
+    }
+
+    @GetMapping("/duplicates")
+    public String duplicates(Model model) {
+        model.addAttribute("duplicates", duplicateRepo.findAll());
+        model.addAttribute("basePath", MapExplorerApplication.basePath);
+        return "/duplicates";
     }
 }
