@@ -39,5 +39,10 @@ venv/
 ### VS Code ###
 .vscode/
 
+# The maps
 /maps/
-src/main/resources/application.properties
+
+# Cache from image comparison
+Scripts/cache/
+Scripts/results.json
+mysql.properties

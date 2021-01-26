@@ -1,23 +1,32 @@
+DROP TABLE IF EXISTS duplicates;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS maps;
 
-CREATE TABLE `maps` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `filePath` varchar(512) DEFAULT NULL,
-    `width` int(11) DEFAULT NULL,
-    `height` int(11) DEFAULT NULL,
-    `squareWidth` int(11) DEFAULT NULL,
-    `squareHeight` int(11) DEFAULT NULL,
-    `uploader` varchar(25) DEFAULT NULL,
-    `uploadDate` datetime DEFAULT current_timestamp(),
-    `imageHash` varchar(32) DEFAULT NULL,
-    PRIMARY KEY (`id`)
+CREATE TABLE maps (
+    id INT NOT NULL AUTO_INCREMENT,
+    filePath VARCHAR(512) DEFAULT NULL,
+    width INT DEFAULT NULL,
+    height INT DEFAULT NULL,
+    squareWidth INT DEFAULT NULL,
+    squareHeight INT DEFAULT NULL,
+    uploader VARCHAR(25) DEFAULT NULL,
+    uploadDate DATETIME DEFAULT current_timestamp(),
+    imageHash VARCHAR(32) DEFAULT NULL,
+    PRIMARY KEY (id)
 );
 
+CREATE TABLE tags (
+    mapID INT NOT NULL,
+    tag varchar(30) NOT NULL,
+    PRIMARY KEY (mapID,tag),
+    FOREIGN KEY (mapID) REFERENCES maps (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
-CREATE TABLE `tags` (
-    `mapID` int(11) NOT NULL,
-    `tag` varchar(30) NOT NULL,
-    PRIMARY KEY (`mapID`,`tag`),
-    FOREIGN KEY (`mapID`) REFERENCES `maps` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-)
+CREATE TABLE duplicates (
+    map1 INT,
+    map2 INT,
+    pct FLOAT,
+    PRIMARY KEY (map1, map2),
+    FOREIGN KEY (map1) REFERENCES maps (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (map2) REFERENCES maps (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
