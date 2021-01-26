@@ -9,11 +9,12 @@ if [ "$oldVersion" != "$newVersion" ]
 then
         # Get Changes
         git checkout "$newVersion" -b master
-        git reset --hard origin/master
+        git reset --hard
         git clean -fd
         git pull
 
         chmod +x ./gradlew
+        chmod +x ./updateAndRun.sh
 fi
 
 ./gradlew bootRun
