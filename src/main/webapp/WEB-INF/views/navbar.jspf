@@ -1,0 +1,19 @@
+<nav>
+    <button id="navMenuButton" type="submit"><span class="material-icons md-light">menu</span></button>
+    <div id="navOptions">
+        <button type="button" id="navMenuCloseButton"><span class="material-icons md-light">close</span></button>
+        <a href="/" style="border-radius: 0 0 0 8px"><span>Home</span></a>
+        <a href="/review"><span>Review</span></a>
+        <a href="/duplicates"><span>Duplicates</span></a>
+    </div>
+    <input id="searchText" value="${search}"  type="text" placeholder="Search for some tags"/>
+    <button id="search" type="submit"><span class="material-icons md-light">search</span></button>
+</nav>
+<script>
+    navBar = new NavBar( document.getElementById("navOptions"),
+                                document.getElementById("navMenuButton"),
+                                document.getElementById("navMenuCloseButton"),
+                                document.getElementById("searchText"),
+                                document.getElementById("search"));
+
+</script>

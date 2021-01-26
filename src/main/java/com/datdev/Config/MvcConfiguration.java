@@ -1,5 +1,6 @@
-package com.datdev;
+package com.datdev.Config;
 
+import com.datdev.MapExplorerApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 .material-icons.md-light {
     color: rgba(255, 255, 255, 1);
 }
 
+/* General */
 body {
     background: #121212;
     color: #ffffff;
@@ -16,6 +18,11 @@ main {
     padding: 10px;
 }
 
+h1 {
+    border-bottom: 1px red solid;
+}
+
+/* Nav Bar */
 nav {
     height: 30px;
     background-color: #363636;
@@ -25,17 +32,44 @@ nav {
     top: 0;
     z-index: 100;
     display: flex;
+}
 
+nav #navMenuButton, nav #navMenuCloseButton {
+    display: none;
+}
+
+nav #navOptions {
+    flex:auto;
+    display: flex;
+}
+
+nav #navOptions a {
+    flex: auto;
+    padding: 0 5px;
+    height: 30px;
+    display: flex;
+
+    text-decoration: inherit;
+    color: inherit;
+    font: 400 13.3333px Arial;
+
+
+    transition: 0.1s ease-in;
+    border: 1px rgba(255, 255, 255, 0) solid;
+}
+
+nav #navOptions a span {
+    margin: auto;
 }
 
 nav input[type="text"] {
     flex: 100%;
     margin: 0 10px;
     background-color: rgba(255, 255, 255, 0.15);
-    color: white;
+    color: inherit;
     border-radius: 20px;
     text-indent: 10px;
-    border: 0 rgba(255, 255, 255, 0) solid;
+    border: 1px rgba(255, 255, 255, 0) solid;
     transition: 0.1s ease-in;
 }
 
@@ -52,9 +86,13 @@ nav button {
     border-radius: 20px;
     width: 60px;
     height: 30px;
-    transition: 0.1s ease-in;
+    padding: 1px 0;
+    box-sizing: border-box;
+
     background-color: rgba(255, 255, 255, 0);
-    border: 0 rgba(255, 255, 255, 0) solid;
+    border: 1px rgba(255, 255, 255, 0) solid;
+
+    transition: 0.1s ease-in;
 }
 
 nav button:focus {
@@ -63,6 +101,11 @@ nav button:focus {
 }
 
 @media (hover) {
+    nav #navOptions a:hover {
+        background-color: rgba(255, 255, 255, 0.19);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+    }
+
     nav button:hover {
         background-color: rgba(255, 255, 255, 0.19);
         border: 1px rgba(255, 255, 255, 0.20) solid;
@@ -71,12 +114,67 @@ nav button:focus {
     nav input[type="text"]:hover {
         background-color: rgba(255, 255, 255, 0.17);
         border: 1px rgba(255, 255, 255, 0.20) solid;
-
-        text-indent: 10px;
     }
 }
 
+@media only screen and (max-width: 650px) {
+    nav #navMenuButton, nav #navMenuCloseButton {
+        display: inline-block;
+    }
 
+    nav #navOptions {
+        display: block;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        visibility: collapse;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        overflow-x: hidden;
+        padding: 60px 0;
+        background-color: #363636f0;
+        transition: ease-in .2s;
+    }
+
+    nav #navOptions.open {
+        width: 150px;
+
+        padding: 60px;
+        visibility: visible;
+    }
+
+    nav #navOptions button {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        margin-top: 12px;
+    }
+
+    nav #navOptions a {
+        font-size: larger;
+    }
+
+    nav input[type="text"] {
+        flex: auto;
+        flex-grow: 1;
+    }
+    nav button {
+        width: 30px;
+    }
+
+    nav button:active {
+        background-color: rgba(255, 255, 255, 0.19);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+    }
+
+    nav #navMenuMobileOptions {
+        display: flex;
+        flex: 100%;
+    }
+}
+
+/* Home Page */
 .gallery {
     display: flex;
     flex-wrap: wrap;
@@ -171,38 +269,155 @@ nav button:focus {
     }
 }
 
+
+/* Image Page */
+
+.imageOpenWrap {
+    width: 80%;
+    margin: auto;
+}
+
 .bigImage {
     max-width: 100%;
     object-fit: scale-down;
+    margin: auto;
+    display: block;
 }
 
-.tagWrap {
-    border: 1px solid grey;
-    cursor: text;
+#tagWrap {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     flex-wrap: wrap;
-    padding: 8px;
+    padding: 4px;
+    margin: 10px 0 0 0;
 }
 
-.tagInput {
-    border: none;
-    flex: 1 1 0;
-    padding: 8px;
-}
-
-.tagObject {
+#tagWrap .tagObject {
     padding: 6px 16px;
-    margin: 0 4px;
+    margin: 2px 10px 2px 0;
     border-radius: 5px;
-    background-color: blue;
-    color: white;
+    background-color: #660066;
+    line-height: normal;
     cursor: pointer;
+    text-align: center;
 }
 
-.tagObject::after {
+#tagWrap .tagObject::after {
     content: ' \00d7';
 }
 
-.tagButton {
+.inputWrap {
+    display: inline-flex;
+    flex: auto;
+}
 
+#tagWrap .inputWrap .tagInput {
+    flex: auto;
+    box-sizing: border-box;
+    padding: 2px 10px 2px 10px;
+    margin: 2px 0 2px 0;
+    height: 41px;
+
+    border: rgba(255, 255, 255, 0) solid;
+    border-radius: 5px 0 0 5px;
+
+    color: inherit;
+    background-color: rgba(255, 255, 255, 0.15);
+
+    font-family: inherit;
+    font-size: medium;
+
+    transition: 0.1s ease-in;
+}
+
+.rounded {
+    border-radius: 5px !important;
+}
+
+#tagWrap .inputWrap .tagButton {
+    box-sizing: border-box;
+    margin: 2px 0 2px 0;
+    width: 95px;
+
+    border: rgba(255, 255, 255, 0) solid;
+    border-radius: 0 5px 5px 0;
+
+    color: inherit;
+    background-color: rgba(255, 255, 255, .11);
+
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+
+    transition: 0.1s ease-in;
+}
+
+.hidden {
+    visibility: collapse;
+    width: 0 !important;
+    padding: 0;
+    border: 0;
+}
+
+#tagWrap .inputWrap .tagButton:focus {
+    outline: 0;
+}
+
+#tagWrap .inputWrap .tagInput:focus {
+    outline: 0;
+}
+
+@media (hover) {
+    #tagWrap .tagButton:hover {
+        background-color: rgba(255, 255, 255, 0.19);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+        outline: 0;
+    }
+
+    #tagWrap .tagInput:hover {
+        outline: 0;
+        background-color: rgba(255, 255, 255, 0.17);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+    }
+}
+
+@media only screen and (max-width: 950px) {
+    .imageOpenWrap {
+        width: auto;
+    }
+
+    #tagWrap .tagObject {
+        padding: 6px 16px;
+        margin: 2px 10px 2px 10px;
+        width: 100%;
+        font-size: larger;
+    }
+
+    .inputWrap {
+        display: flex;
+        flex: auto;
+        flex-wrap: wrap;
+    }
+
+    #tagWrap .inputWrap .tagInput {
+        border-radius: 5px 5px 0 0;
+        margin-bottom: 0;
+    }
+
+    #tagWrap .inputWrap .tagButton {
+        width:100%;
+        height: auto;
+        padding: 10px 0 10px 0;
+        margin-top: 0;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .hidden {
+        visibility: collapse;
+        width: 100% !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 }

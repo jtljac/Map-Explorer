@@ -24,14 +24,14 @@ public class SearchUtils {
         String[] params = search.split("\\s+");
         List<String> tagSQL = new ArrayList<>();
         List<String>  notSQL = new ArrayList<>();
-        List<String>  specificSQL = new ArrayList<>();
+        List<String>  bySQL = new ArrayList<>();
 
         Matcher match;
         for (String param : params) {
             if ((match = searchGridTagPattern.matcher(param)).matches()) {
                 tagSQL.add(" (squareWidth " + SearchUtils.parseSquare(match.group(1)) + " AND squareHeight " + SearchUtils.parseSquare(match.group(2)) + ")");
             } else if ((match = searchUserTagPattern.matcher(param)).matches()) {
-                specificSQL.add(" uploader = '" + match.group(1) + "'");
+                bySQL.add(" uploader = '" + match.group(1) + "'");
             } else if ((match = searchLikeTagPattern.matcher(param)).matches()) {
                 tagSQL.add(" tag LIKE '%" + param + "%'");
             } else if ((match = searchNotLikeTagPattern.matcher(param)).matches()) {
@@ -44,14 +44,14 @@ public class SearchUtils {
         String sqlString = "SELECT DISTINCT id, filePath, width, height, squareWidth, squareHeight, uploader, uploadDate, imageHash " +
                 "from maps left outer join tags on maps.id=tags.mapID ";
 
-        if (!tagSQL.isEmpty() || !notSQL.isEmpty() || !specificSQL.isEmpty()) {
+        if (!tagSQL.isEmpty() || !notSQL.isEmpty() || !bySQL.isEmpty()) {
             String sqlWhere = " WHERE ";
 
             if (!tagSQL.isEmpty()) sqlWhere += "(" + String.join(" OR ", tagSQL) + ")";
 
-            if (!specificSQL.isEmpty()) {
+            if (!bySQL.isEmpty()) {
                 if (sqlWhere.length() > 7) sqlWhere += " AND ";
-                sqlWhere += String.join(" AND ", specificSQL);
+                sqlWhere += "(" + String.join(" OR ", bySQL) + ")";
             }
             if (!notSQL.isEmpty()) {
                 if (sqlWhere.length() > 7) sqlWhere += " AND ";

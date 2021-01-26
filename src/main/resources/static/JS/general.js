@@ -16,3 +16,11 @@ function ajaxSimplePOST(URL, payload, responseFunc) {
     xhttp.setRequestHeader("Content-type", "application/json",)
     xhttp.send(payload);
 }
+
+function openWithParams(path, params) {
+    let newPath = path + "?";
+    for (let [key, value] of Object.entries(params)) {
+        newPath += key + "=" + value;
+    }
+    window.open(newPath, "_self");
+}

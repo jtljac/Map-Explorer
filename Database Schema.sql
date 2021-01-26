@@ -12,6 +12,7 @@ CREATE TABLE maps (
     uploader VARCHAR(25) DEFAULT NULL,
     uploadDate DATETIME DEFAULT current_timestamp(),
     imageHash VARCHAR(32) DEFAULT NULL,
+    toReview TINYINT DEFAULT 1,
     PRIMARY KEY (id)
 );
 
