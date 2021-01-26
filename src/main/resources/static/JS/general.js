@@ -22,5 +22,6 @@ function openWithParams(path, params) {
     for (let [key, value] of Object.entries(params)) {
         newPath += key + "=" + value;
     }
-    window.open(newPath, "_self");
+    let url = encodeURI(newPath);
+    window.open(url, "_self");
 }
