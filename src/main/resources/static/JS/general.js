@@ -19,7 +19,13 @@ function ajaxSimplePOST(URL, payload, responseFunc) {
 
 function openWithParams(path, params) {
     let newPath = path + "?";
+    let first = true;
     for (let [key, value] of Object.entries(params)) {
+        if (!first) {
+            newPath += "&";
+        } else {
+            first = false;
+        }
         newPath += key + "=" + value;
     }
     let url = encodeURI(newPath);

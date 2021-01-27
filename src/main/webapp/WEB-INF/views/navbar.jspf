@@ -10,10 +10,12 @@
     <button id="search" type="submit"><span class="material-icons md-light">search</span></button>
 </nav>
 <script>
-    navBar = new NavBar( document.getElementById("navOptions"),
+    const navBar = new NavBar( document.getElementById("navOptions"),
                                 document.getElementById("navMenuButton"),
                                 document.getElementById("navMenuCloseButton"),
                                 document.getElementById("searchText"),
-                                document.getElementById("search"));
+                                document.getElementById("search"),
+                                "${order.replace("\"", "\\\"")}",
+                                "${orderdir.replace("\"", "\\\"")}");
 
 </script>

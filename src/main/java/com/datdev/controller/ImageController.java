@@ -28,11 +28,15 @@ public class ImageController {
     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(required = false, defaultValue = "") String search,
+                        @RequestParam(required = false, defaultValue = "name") String order,
+                        @RequestParam(required = false, defaultValue = "asc") String orderdir,
                         @RequestParam(required = false, defaultValue = "0") int offset,
                         @RequestParam(required = false, defaultValue = "50") int numPerPage) {
 
         model.addAttribute("offset", offset);
         model.addAttribute("search", search);
+        model.addAttribute("order", order);
+        model.addAttribute("orderdir", orderdir);
         model.addAttribute("numPerPage", numPerPage);
         model.addAttribute("basePath", MapExplorerApplication.basePath);
         return "/index";

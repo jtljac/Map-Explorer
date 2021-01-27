@@ -1,6 +1,8 @@
 package com.datdev.controller;
 
 import com.datdev.MapExplorerApplication;
+import com.datdev.enums.SearchDir;
+import com.datdev.enums.SearchMode;
 import com.datdev.model.Image;
 import com.datdev.model.Map;
 import com.datdev.model.MapReduced;
@@ -27,10 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -61,6 +60,8 @@ public class apiController {
     @GetMapping(value = "/getImages", produces = "application/json")
     @ResponseBody
     public ResponseEntity<List<MapReduced>> getImages(@RequestParam(required = false, defaultValue = "") String search,
+                                                      @RequestParam(required = false, defaultValue = "name") String order,
+                                                      @RequestParam(required = false, defaultValue = "asc") String orderdir,
                                                       @RequestParam(required = false, defaultValue = "0") int offset,
                                                       @RequestParam(required = false, defaultValue = "30") int numPerPage) {
         EntityManager em = emf.createEntityManager();
@@ -68,8 +69,44 @@ public class apiController {
         int theNumPerPage = Math.max(numPerPage, 0);
         int theOffset = Math.max(offset, 0);
 
+        SearchMode searchMode;
+        try {
+            searchMode = SearchMode.valueOf(order.toUpperCase());
+        } catch (IllegalArgumentException error) {
+            searchMode = SearchMode.NAME;
+        }
+
+        SearchDir searchDir;
+        try {
+            searchDir = SearchDir.valueOf(orderdir.toUpperCase());
+        } catch (IllegalArgumentException error) {
+            searchDir = SearchDir.ASC;
+        }
+
         String sqlString = SearchUtils.createSearchStatement(search);
-        sqlString += " ORDER BY filePath ASC";
+        sqlString += " ORDER BY ";
+        switch (searchMode) {
+            case NAME:
+                sqlString += "filePath";
+                break;
+            case UPLOADER:
+                sqlString += "uploader";
+                break;
+            case DATE:
+                sqlString += "uploadDate";
+                break;
+            case RESOLUTION:
+                sqlString += "width*height";
+                break;
+            case GRIDSIZE:
+                sqlString += "squareWidth*SquareHeight";
+                break;
+            case RANDOM:
+                sqlString += "RAND()";
+                break;
+        }
+        sqlString += " " + searchDir.toString();
+
         sqlString += " LIMIT " + theNumPerPage + " OFFSET " + theOffset;
 
         System.out.println("Getting Maps");

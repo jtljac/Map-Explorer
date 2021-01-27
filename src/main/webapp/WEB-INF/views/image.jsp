@@ -17,6 +17,9 @@
             <c:if test="${map.squareWidth != null && map.squareHeight != null}">
                 <p>Grid size: ${map.squareWidth}x${map.squareHeight}</p>
             </c:if>
+            <c:if test="${map.uploadDate != null}">
+                <p>Upload date: ${map.getShortDate()}</p>
+            </c:if>
             <img class="bigImage" src="${basePath}${map.filePath}"/>
             <div id="tagWrap">
                 <div class="inputWrap">

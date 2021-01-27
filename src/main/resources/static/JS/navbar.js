@@ -1,11 +1,22 @@
 class NavBar {
-    constructor(navMenu, openButton, closeButton, searchBar, searchButton) {
+    constructor(navMenu, openButton, closeButton, searchBar, searchButton, order, orderDir) {
         this.navMenu = navMenu;
         this.openButton = openButton;
         this.closeButton = closeButton;
 
         this.searchBar = searchBar;
         this.searchButton = searchButton;
+
+        if (order !== "undefined") {
+            this.order = order;
+        } else {
+            this.order = "";
+        }
+        if (orderDir !== "undefined") {
+            this.orderDir = orderDir;
+        } else {
+            this.orderDir = "";
+        }
 
         let scope = this;
         this.openButton.addEventListener("click", function () {
@@ -23,7 +34,7 @@ class NavBar {
         });
 
         this.searchButton.addEventListener("click", function () {
-            openWithParams("/", {"search": document.getElementById("searchText").value})
+            openWithParams("/", {"search": document.getElementById("searchText").value, "order": scope.order, "orderdir": scope.orderDir})
         });
     }
 }

@@ -15,7 +15,7 @@
     </div>
 </main>
 <script>
-    const search = new Gallery(document.getElementById("gallery"), "${basePath}", ${offset}, ${numPerPage}, "${search.replace("\"", "\\\"")}");
+    const search = new Gallery(document.getElementById("gallery"), "${basePath}", ${offset}, ${numPerPage}, "${search.replace("\"", "\\\"")}", "${order.replace("\"", "\\\"")}", "${orderdir.replace("\"", "\\\"")}");
     </script>
     </body>
 </html>

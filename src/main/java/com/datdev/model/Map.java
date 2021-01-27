@@ -2,6 +2,7 @@ package com.datdev.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -98,6 +99,10 @@ public class Map {
 
     public Timestamp getUploadDate() {
         return uploadDate;
+    }
+
+    public String getShortDate() {
+        return (new SimpleDateFormat("dd/MM/yyyy")).format(uploadDate);
     }
 
     public void setUploadDate(Timestamp uploadDate) {

@@ -1,10 +1,12 @@
 class Gallery {
-    constructor(gallery, basePath, offset, numPerPage, search) {
+    constructor(gallery, basePath, offset, numPerPage, search, order, orderDir) {
         this.gallery = gallery;
         this.basePath = basePath;
         this.offset = offset;
         this.numPerPage = numPerPage;
         this.search = search;
+        this.order = order;
+        this.orderDir = orderDir;
         this.depth = 0;
         this.gettingImages = false;
         this.end = false;
@@ -46,7 +48,7 @@ class Gallery {
     getImages() {
         if (!this.gettingImages) {
             let scope = this;
-            ajaxSimpleGet("/getImages?search=" + this.search + "&offset=" + (this.offset + this.numPerPage * this.depth) + "&numPerPage=" + this.numPerPage, function (response) {
+            ajaxSimpleGet("/getImages?search=" + this.search + "&order=" + this.order + "&orderdir=" + this.orderDir + "&offset=" + (this.offset + this.numPerPage * this.depth) + "&numPerPage=" + this.numPerPage, function (response) {
                 if (response.readyState === 4) {
                     if (response.status === 200) scope.callback(response);
                     else if (response.status === 204) {
