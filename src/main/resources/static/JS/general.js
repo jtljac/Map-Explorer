@@ -17,6 +17,15 @@ function ajaxSimplePOST(URL, payload, responseFunc) {
     xhttp.send(payload);
 }
 
+function ajaxSimpleDELETE(URL, responseFunc) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        responseFunc(this);
+    }
+    xhttp.open("DELETE", URL, true);
+    xhttp.send();
+}
+
 function openWithParams(path, params) {
     let newPath = path + "?";
     let first = true;

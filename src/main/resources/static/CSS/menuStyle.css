@@ -1,0 +1,52 @@
+.kebab {
+    position: relative;
+}
+
+.kebab button {
+    width: 30px;
+
+}
+
+@media (hover) {
+    .kebab .kebabIcon:hover {
+        background-color: rgba(255, 255, 255, 0.19);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+    }
+}
+
+.kebab .kebabContent {
+    position: absolute;
+    right: 10px;
+    top: 32px;
+    background-color: #363636;
+    transition: .05s ease-in;
+    transform-origin: right top;
+    transform: scale(.7);
+    opacity: 0;
+    visibility: collapse;
+    display: flex;
+    flex-direction: column;
+}
+
+.kebab .kebabContent.active {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+}
+
+.kebab .kebabContent button {
+    display: inline-flex;
+    width: auto;
+    height: auto;
+    align-items: center;
+    padding: 6px 12px;
+
+    border-color: rgba(255, 255, 255, 0.05);
+    border-radius: 0;
+
+    color: white;
+}
+
+.kebab .kebabContent button:focus{
+    border: 1px rgba(255, 255, 255, 0.05) solid;
+}

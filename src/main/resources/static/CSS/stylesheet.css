@@ -22,6 +22,44 @@ h1 {
     border-bottom: 1px red solid;
 }
 
+button {
+    border-radius: 20px;
+    width: 60px;
+    height: 30px;
+    padding: 1px 0;
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px rgba(255, 255, 255, 0) solid;
+
+    transition: 0.1s ease-in;
+}
+
+button:focus {
+    border: 0;
+    outline: 0;
+}
+
+@media (hover) {
+    button:hover {
+        background-color: rgba(255, 255, 255, 0.19);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    button {
+        width: 30px;
+    }
+
+    button:active {
+        background-color: rgba(255, 255, 255, 0.19);
+        border: 1px rgba(255, 255, 255, 0.20) solid;
+    }
+}
+
 /* Nav Bar */
 nav {
     height: 30px;
@@ -82,31 +120,8 @@ nav input[type="text"]::placeholder {
     color: rgba(255, 255, 255, .6);
 }
 
-nav button {
-    border-radius: 20px;
-    width: 60px;
-    height: 30px;
-    padding: 1px 0;
-    box-sizing: border-box;
-
-    background-color: rgba(255, 255, 255, 0);
-    border: 1px rgba(255, 255, 255, 0) solid;
-
-    transition: 0.1s ease-in;
-}
-
-nav button:focus {
-    border: 0;
-    outline: 0;
-}
-
 @media (hover) {
     nav #navOptions a:hover {
-        background-color: rgba(255, 255, 255, 0.19);
-        border: 1px rgba(255, 255, 255, 0.20) solid;
-    }
-
-    nav button:hover {
         background-color: rgba(255, 255, 255, 0.19);
         border: 1px rgba(255, 255, 255, 0.20) solid;
     }
@@ -158,14 +173,6 @@ nav button:focus {
     nav input[type="text"] {
         flex: auto;
         flex-grow: 1;
-    }
-    nav button {
-        width: 30px;
-    }
-
-    nav button:active {
-        background-color: rgba(255, 255, 255, 0.19);
-        border: 1px rgba(255, 255, 255, 0.20) solid;
     }
 
     nav #navMenuMobileOptions {
@@ -275,6 +282,24 @@ nav button:focus {
 .imageOpenWrap {
     width: 80%;
     margin: auto;
+}
+
+#headerWrap {
+    display: flex;
+    border-bottom: 1px red solid;
+}
+
+#headerWrap h1 {
+    border: 0;
+    margin: 0;
+}
+
+.imageOpenWrap #headerWrap .kebab {
+    margin: auto 0 auto auto;
+}
+
+#headerWrap .menuWrap {
+    position: absolute;
 }
 
 .bigImage {

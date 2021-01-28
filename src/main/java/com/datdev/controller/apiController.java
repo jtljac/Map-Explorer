@@ -121,9 +121,29 @@ public class apiController {
         return entity;
     }
 
+    @DeleteMapping("/deleteImage")
+    public ResponseEntity<String> deleteImage(@RequestParam int id) {
+        Optional<Map> map = mapRepository.findById(id);
+
+        if (map.isPresent()) {
+            try {
+                Files.deleteIfExists(Path.of(MapExplorerApplication.basePath + map.get().getFilePath()));
+            } catch (IOException e) {
+                System.out.println("Failed to delete file" + map.get().getFilePath());
+            }
+
+            mapRepository.deleteById(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("00 - Unknown Image", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @PostMapping("/setTags")
     @ResponseBody
-    public ResponseEntity<String> imageTitle(@RequestParam int id, @RequestBody String[] newTags) {
+    public ResponseEntity<String> setImageTags(@RequestParam int id, @RequestBody String[] newTags) {
         Optional<Map> map = mapRepository.findById(id);
 
         if (map.isEmpty()) {
@@ -138,7 +158,7 @@ public class apiController {
 
     @PostMapping(value = "/uploadImage", consumes = {"multipart/form-data"})
     @ResponseBody
-    public ResponseEntity<String> imageUpload(@ModelAttribute Image image) throws IOException, NoSuchAlgorithmException {
+    public ResponseEntity<String> uploadImage(@ModelAttribute Image image) throws IOException, NoSuchAlgorithmException {
         System.out.println("Received image from " + image.name);
 
         // Check Hash

@@ -1,5 +1,7 @@
 package com.datdev.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -33,7 +35,8 @@ public class Map {
     @Column(name="uploader")
     String uploader;
 
-    @Column(name="uploadDate")
+    @Column(name="uploadDate", nullable = false, updatable = false, insertable = false)
+    @CreationTimestamp
     Timestamp uploadDate;
 
     @Column(name="imageHash")
