@@ -35,9 +35,11 @@ class Tag {
             }
         });
 
-        button.addEventListener("click", function () {
-            scope.buttonSubmit();
-        });
+        if (button != null) {
+            button.addEventListener("click", function () {
+                scope.buttonSubmit();
+            });
+        }
     }
 
     newTagEvent(input) {
@@ -134,13 +136,17 @@ class Tag {
     }
 
     showSubmitButton() {
-        this.box.classList.remove("rounded");
-        this.button.classList.remove("hidden");
+        if (this.button != null) {
+            this.box.classList.remove("rounded");
+            this.button.classList.remove("hidden");
+        }
     }
 
     hideSubmitButton() {
-        this.box.classList.add("rounded");
-        this.button.classList.add("hidden");
+        if (this.button != null) {
+            this.box.classList.add("rounded");
+            this.button.classList.add("hidden");
+        }
     }
 
     buttonSubmit() {

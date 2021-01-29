@@ -7,12 +7,9 @@
         <a href="/review"><span>Review</span></a>
         <a href="/duplicates"><span>Duplicates</span></a>
     </div>
-    <input id="searchText" value="${search.replace("\"", "&quot;")}"  type="text" placeholder="Search for some tags"/>
+    <input id="searchText" value="${search.replace("\"", "&quot;")}"  type="search" placeholder="Search for some tags"/>
     <button id="search" type="submit"><span class="material-icons md-light">search</span></button>
 </nav>
-<form action="/setTags" method="post">
-
-</form>
 <script>
     const navBar = new NavBar( document.getElementById("navOptions"),
                                 document.getElementById("navMenuButton"),

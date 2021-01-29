@@ -36,9 +36,7 @@
                     <button id="tagsButton" type="submit" class="tagButton hidden">Update Tags</button>
                 </div>
             </div>
-
         </main>
-        <div id="test"></div>
         <script>
             const tag = new Tag(document.getElementById("tags"), document.getElementById("tagsButton"), document.getElementById("tagWrap"));
             ajaxSimpleGet("/getTags", function (response) {

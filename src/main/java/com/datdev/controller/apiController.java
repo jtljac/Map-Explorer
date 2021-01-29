@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -163,8 +164,16 @@ public class apiController {
 
         // Check Hash
         MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] data = image.image.getInputStream().readAllBytes();
-        String imageHash = DigestUtils.md5DigestAsHex(data);
+        InputStream stream = image.image.getInputStream();
+        byte[] data = new byte[2048];
+        int numBytes;
+        while ((numBytes = stream.read(data)) != -1) {
+            md.update(data, 0, numBytes);
+        }
+
+        stream.close();
+
+        String imageHash = DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
 
         if (mapRepository.existsByImageHash(imageHash)) {
             System.out.println("Image already uploaded, discarding");
@@ -179,9 +188,9 @@ public class apiController {
             return new ResponseEntity<>("01 - Bad name format, please clean it up", HttpStatus.BAD_REQUEST);
         }
 
-        if (!userNamePattern.matcher(image.name).matches()) {
+        if (image.name == null || !userNamePattern.matcher(image.name).matches()) {
             System.out.println(image.name + " is a really bad username, discarding");
-            return new ResponseEntity<>("02 - Your username is bad and you should feel bad", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("02 - Your username is bad and you should feel bad, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
         }
 
         String directory = "uploaded/" + image.name + "/";
@@ -194,15 +203,19 @@ public class apiController {
 
         String fileName;
         String[] theName = name.split("\\.");
-        try (InputStream is = image.image.getInputStream()) {
+        try {
             fileName = FileUtil.getUnownedFileName(path, theName[0], theName[1]);
-            Files.copy(is, path.resolve(fileName));
+            stream = image.image.getInputStream();
+            Files.copy(stream, path.resolve(fileName));
+            stream.close();
         } catch (InvalidFileNameException e) {
             System.out.println("There is Somehow 2,147,483,647 files with the name" + name + ", this request was rejected");
             return new ResponseEntity<>("03 - Somehow there are already 2,147,483,648 files with that name, try a different one", HttpStatus.BAD_REQUEST);
         }
 
-        BufferedImage bufferedImage = ImageIO.read(image.image.getInputStream());
+        stream = image.image.getInputStream();
+        BufferedImage bufferedImage = ImageIO.read(stream);
+        stream.close();
 
         Map map = new Map(directory + fileName, bufferedImage.getWidth(), bufferedImage.getHeight(), image.squareWidth, image.squareHeight, image.name, imageHash);
 
@@ -212,10 +225,10 @@ public class apiController {
 
         map.addTag("uploaded");
 
-        mapRepository.save(map);
+        map = mapRepository.save(map);
 
         System.out.println("Added Map: " + map.toString());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(String.valueOf(map.getId()), HttpStatus.OK);
     }
 }

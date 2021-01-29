@@ -100,7 +100,7 @@ nav #navOptions a span {
     margin: auto;
 }
 
-nav input[type="text"] {
+nav input[type="search"] {
     flex: 100%;
     margin: 0 10px;
     background-color: rgba(255, 255, 255, 0.15);
@@ -111,12 +111,12 @@ nav input[type="text"] {
     transition: 0.1s ease-in;
 }
 
-nav input[type="text"]:focus {
+nav input[type="search"]:focus {
     outline: 0;
     border: 1px rgba(255, 255, 255, 0.20) solid;
 }
 
-nav input[type="text"]::placeholder {
+nav input[type="search"]::placeholder {
     color: rgba(255, 255, 255, .6);
 }
 
@@ -126,7 +126,7 @@ nav input[type="text"]::placeholder {
         border: 1px rgba(255, 255, 255, 0.20) solid;
     }
 
-    nav input[type="text"]:hover {
+    nav input[type="search"]:hover {
         background-color: rgba(255, 255, 255, 0.17);
         border: 1px rgba(255, 255, 255, 0.20) solid;
     }
@@ -170,7 +170,7 @@ nav input[type="text"]::placeholder {
         font-size: larger;
     }
 
-    nav input[type="text"] {
+    nav input[type="search"] {
         flex: auto;
         flex-grow: 1;
     }

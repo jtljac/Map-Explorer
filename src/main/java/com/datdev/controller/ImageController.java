@@ -1,6 +1,7 @@
 package com.datdev.controller;
 
 import com.datdev.MapExplorerApplication;
+import com.datdev.model.Image;
 import com.datdev.model.Map;
 import com.datdev.repo.DuplicateRepo;
 import com.datdev.repo.MapRepo;
@@ -58,5 +59,10 @@ public class ImageController {
         model.addAttribute("duplicates", duplicateRepo.findAll());
         model.addAttribute("basePath", MapExplorerApplication.basePath);
         return "/duplicates";
+    }
+
+    @GetMapping("uploadImage")
+    public String upload(Model model) {
+        return "/upload";
     }
 }
