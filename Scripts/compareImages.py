@@ -1,6 +1,5 @@
 import json
 from io import BytesIO
-from multiprocessing import Pool
 import requests
 import os
 from PIL import Image
