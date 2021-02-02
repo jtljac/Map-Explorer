@@ -17,7 +17,7 @@ cursor = conn.cursor()
 
 sql = "SELECT filePath FROM `maps`"
 cursor.execute(sql)
-result = cursor.fetchall()
+result = [item[0] for item in cursor.fetchall()]
 conn.close()
 
 print(result)
