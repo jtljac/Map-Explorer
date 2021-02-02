@@ -6,7 +6,7 @@ def parseDir(directory):
         if file.is_file():
             path = file.path.replace("\\", "/")[len(startingDirectory):]
             if path not in result:
-                print(path + " not in the database")
+                os.remove(file.path)
 
         elif file.is_dir():
             parseDir(file.path)
@@ -19,8 +19,6 @@ sql = "SELECT filePath FROM `maps`"
 cursor.execute(sql)
 result = [item[0] for item in cursor.fetchall()]
 conn.close()
-
-print(result)
 
 startingDirectory = input("Enter Starting Directory: ").replace("\\", "/")
 if startingDirectory[-1] != "/":
