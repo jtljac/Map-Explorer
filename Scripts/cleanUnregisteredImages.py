@@ -21,4 +21,4 @@ result = cursor.fetchall()
 conn.close()
 
 startingDirectory = input("Enter Starting Directory: ")
-
+parseDir(startingDirectory)
