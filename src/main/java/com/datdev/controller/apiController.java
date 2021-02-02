@@ -170,10 +170,11 @@ public class apiController {
         while ((numBytes = stream.read(data)) != -1) {
             md.update(data, 0, numBytes);
         }
-
         stream.close();
 
         String imageHash = DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
+
+        System.out.println("Calculated image hash: " + imageHash);
 
         if (mapRepository.existsByImageHash(imageHash)) {
             System.out.println("Image already uploaded, discarding");
@@ -204,6 +205,7 @@ public class apiController {
         String fileName;
         String[] theName = name.split("\\.");
         try {
+            System.out.println("Saving to disk");
             fileName = FileUtil.getUnownedFileName(path, theName[0], theName[1]);
             stream = image.image.getInputStream();
             Files.copy(stream, path.resolve(fileName));
@@ -212,6 +214,8 @@ public class apiController {
             System.out.println("There is Somehow 2,147,483,647 files with the name" + name + ", this request was rejected");
             return new ResponseEntity<>("03 - Somehow there are already 2,147,483,648 files with that name, try a different one", HttpStatus.BAD_REQUEST);
         }
+
+        System.out.println("Getting Resolution");
 
         stream = image.image.getInputStream();
         BufferedImage bufferedImage = ImageIO.read(stream);
