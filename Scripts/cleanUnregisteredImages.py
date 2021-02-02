@@ -20,5 +20,7 @@ cursor.execute(sql)
 result = cursor.fetchall()
 conn.close()
 
+print(result)
+
 startingDirectory = input("Enter Starting Directory: ")
 parseDir(startingDirectory)
