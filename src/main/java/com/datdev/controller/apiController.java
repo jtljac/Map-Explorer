@@ -18,6 +18,8 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -218,10 +220,25 @@ public class apiController {
         System.out.println("Getting Resolution");
 
         stream = image.image.getInputStream();
-        BufferedImage bufferedImage = ImageIO.read(stream);
+        int width = 0, height = 0;
+
+        try (ImageInputStream in = ImageIO.createImageInputStream(stream)) {
+            final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
+            if (readers.hasNext()) {
+                ImageReader reader = readers.next();
+                try {
+                    reader.setInput(in);
+                    width = reader.getWidth(0);
+                    height = reader.getHeight(0);
+                } finally {
+                    reader.dispose();
+                }
+            }
+        }
+
         stream.close();
 
-        Map map = new Map(directory + fileName, bufferedImage.getWidth(), bufferedImage.getHeight(), image.squareWidth, image.squareHeight, image.name, imageHash);
+        Map map = new Map(directory + fileName, width, height, image.squareWidth, image.squareHeight, image.name, imageHash);
 
         for (String tag : image.tags) {
             map.addTag(tag);
