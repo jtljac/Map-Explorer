@@ -5,7 +5,7 @@ def parseDir(directory):
     for file in os.scandir(directory):
         if file.is_file():
             path = file.path.replace("\\", "/")[len(startingDirectory):]
-            if not path in result:
+            if path not in result:
                 print(path + " not in the database")
 
         elif file.is_dir():
@@ -22,5 +22,7 @@ conn.close()
 
 print(result)
 
-startingDirectory = input("Enter Starting Directory: ")
+startingDirectory = input("Enter Starting Directory: ").replace("\\", "/")
+if startingDirectory[-1] != "/":
+    startingDirectory += "/"
 parseDir(startingDirectory)
