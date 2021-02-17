@@ -2,3 +2,4 @@ cymysql
 pillow
 requests
 requests-toolbelt
+jproperties3

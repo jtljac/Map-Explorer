@@ -22,7 +22,7 @@ public class DBConfig {
                 e.printStackTrace();
             }
 
-            String db = mysqlProps.getProperty("db", "localhost");
+            String db = mysqlProps.getProperty("address", "localhost");
             String port = mysqlProps.getProperty("port", "3306");
             String schema = mysqlProps.getProperty("schema", "battlemap");
             String dbUser = mysqlProps.getProperty("dbUsername");

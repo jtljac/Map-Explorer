@@ -6,6 +6,7 @@ public class MapReduced {
     int id;
 
     String filePath;
+    String thumbnail;
 
     int width;
     int height;
@@ -13,6 +14,7 @@ public class MapReduced {
     Integer squareWidth;
     Integer squareHeight;
 
+    String author;
     String uploader;
 
     Timestamp uploadDate;
@@ -22,10 +24,12 @@ public class MapReduced {
     public MapReduced(Map map) {
         this.id = map.getId();
         this.filePath = map.getFilePath();
+        this.thumbnail = map.getThumbnailPath();
         this.width = map.getWidth();
         this.height = map.getHeight();
         this.squareWidth = map.getSquareWidth();
         this.squareHeight = map.getSquareHeight();
+        this.author = map.getAuthor();
         this.uploader = map.getUploader();
         this.uploadDate = map.getUploadDate();
         this.imageHash = map.getImageHash();
@@ -45,6 +49,14 @@ public class MapReduced {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public int getWidth() {
@@ -77,6 +89,14 @@ public class MapReduced {
 
     public void setSquareHeight(Integer squareHeight) {
         this.squareHeight = squareHeight;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getUploader() {

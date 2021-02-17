@@ -41,7 +41,7 @@ public class SearchUtils {
             }
         }
 
-        String sqlString = "SELECT DISTINCT id, filePath, width, height, squareWidth, squareHeight, uploader, uploadDate, imageHash " +
+        String sqlString = "SELECT DISTINCT id, filePath, thumbnail, width, height, squareWidth, squareHeight, author, uploader, uploadDate, imageHash, toReview " +
                 "from maps left outer join tags on maps.id=tags.mapID ";
 
         if (!tagSQL.isEmpty() || !notSQL.isEmpty() || !bySQL.isEmpty()) {

@@ -364,6 +364,7 @@ nav input[type="search"]::placeholder {
     box-sizing: border-box;
     margin: 2px 0 2px 0;
     width: 95px;
+    height: auto;
 
     border: rgba(255, 255, 255, 0) solid;
     border-radius: 0 5px 5px 0;

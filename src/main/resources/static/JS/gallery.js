@@ -30,7 +30,7 @@ class Gallery {
         wrap.className = "imgwrap";
         link.appendChild(wrap)
         let image = document.createElement("img");
-        image.src = this.basePath + map.filePath;
+        image.src = this.basePath + (map.thumbnail !== "" ? map.thumbnail : map.filePath);
         if (map.squareWidth && map.squareWidth) image.alt = map.squareWidth + "x" + map.squareHeight;
         wrap.appendChild(image);
 

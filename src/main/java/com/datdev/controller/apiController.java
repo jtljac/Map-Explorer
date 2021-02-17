@@ -183,7 +183,6 @@ public class apiController {
             return new ResponseEntity<>("00 - Image already uploaded", HttpStatus.BAD_REQUEST);
         }
 
-
         String name = image.image.getOriginalFilename();
 
         if(!fileNamePattern.matcher(name).matches()) {

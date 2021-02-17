@@ -5,14 +5,16 @@ DROP TABLE IF EXISTS maps;
 CREATE TABLE maps (
     id INT NOT NULL AUTO_INCREMENT,
     filePath VARCHAR(512) DEFAULT NULL,
+    thumbnail BOOLEAN DEFAULT 0,
     width INT DEFAULT NULL,
     height INT DEFAULT NULL,
     squareWidth INT DEFAULT NULL,
     squareHeight INT DEFAULT NULL,
+    author VARCHAR(25) DEFAULT NULL,
     uploader VARCHAR(25) DEFAULT NULL,
     uploadDate DATETIME DEFAULT current_timestamp(),
     imageHash VARCHAR(32) DEFAULT NULL,
-    toReview TINYINT DEFAULT 1,
+    toReview BOOLEAN DEFAULT 1,
     PRIMARY KEY (id)
 );
 
