@@ -48,17 +48,15 @@ except KeyError:
 conn = cymysql.connect(host=address, user=username, passwd=password, db=schema)
 cur = conn.cursor()
 try:
-    while True:
-        cur.execute('SELECT id, filePath FROM maps WHERE thumbnail=0')
-        temp = cur.fetchall()
+    cur.execute('SELECT id, filePath FROM maps WHERE thumbnail=0')
+    temp = cur.fetchall()
 
-        count = 0
-        for image in temp:
-            count = (count + 1) % 10
-            makeThumbnail(cur, "../maps/", image)
-            if count == 0:
-                conn.commit()
-        sleep(60 * 60)
+    count = 0
+    for image in temp:
+        count = (count + 1) % 10
+        makeThumbnail(cur, "../maps/", image)
+        if count == 0:
+            conn.commit()
 finally:
     conn.commit()
     cur.close()
