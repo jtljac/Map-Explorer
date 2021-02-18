@@ -6,15 +6,16 @@ import com.datdev.enums.SearchMode;
 import com.datdev.model.Image;
 import com.datdev.model.Map;
 import com.datdev.model.MapReduced;
+import com.datdev.model.MapUpdate;
 import com.datdev.repo.MapRepo;
 import com.datdev.utils.FileUtil;
 import com.datdev.utils.SearchUtils;
 import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
@@ -24,7 +25,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.xml.bind.DatatypeConverter;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -38,8 +38,8 @@ import java.util.stream.Collectors;
 
 @Controller
 public class apiController {
-    static final Pattern fileNamePattern = Pattern.compile("[\\w _\\-)`(\\[\\]*]{4,50}\\.(png|jpg)");
-    static final Pattern userNamePattern = Pattern.compile("[\\w_-]{1,25}");
+    static final Pattern fileNamePattern = Pattern.compile("[\\w \\-)`(\\[\\]*]{4,50}\\.(png|jpg)");
+    static final Pattern userNamePattern = Pattern.compile("[\\w-]{1,25}");
 
     @Autowired
     MapRepo mapRepository;
@@ -131,6 +131,9 @@ public class apiController {
         if (map.isPresent()) {
             try {
                 Files.deleteIfExists(Path.of(MapExplorerApplication.basePath + map.get().getFilePath()));
+                if (map.get().getThumbnail()) {
+                    Files.deleteIfExists(Path.of(MapExplorerApplication.basePath + map.get().getThumbnailPath()));
+                }
             } catch (IOException e) {
                 System.out.println("Failed to delete file" + map.get().getFilePath());
             }
@@ -144,9 +147,9 @@ public class apiController {
     }
 
 
-    @PostMapping("/setTags")
+    @PutMapping("/setTags/{id}")
     @ResponseBody
-    public ResponseEntity<String> setImageTags(@RequestParam int id, @RequestBody String[] newTags) {
+    public ResponseEntity<String> setImageTags(@PathVariable int id, @RequestBody String[] newTags) {
         Optional<Map> map = mapRepository.findById(id);
 
         if (map.isEmpty()) {
@@ -157,6 +160,29 @@ public class apiController {
             mapRepository.save(map.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
+    }
+
+    @PutMapping(value = "/updateImage/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public ResponseEntity<String> updateImageInfo(@PathVariable int id, @RequestBody MapUpdate theMap) {
+        Optional<Map> map = mapRepository.findById(id);
+
+        if (map.isEmpty()) {
+            return new ResponseEntity<>("0 - Unknown Map ID", HttpStatus.BAD_REQUEST);
+        }
+
+        if (theMap.getUploader() == null || !userNamePattern.matcher(theMap.getUploader()).matches()) {
+            return new ResponseEntity<>("1 - Bad Username, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
+        }
+
+        if (theMap.getAuthor() != null && !userNamePattern.matcher(theMap.getAuthor()).matches()) {
+            return new ResponseEntity<>("2 - Bad Author name, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
+        }
+
+        map.get().updateValues(theMap);
+        mapRepository.save(map.get());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/uploadImage", consumes = {"multipart/form-data"})
@@ -193,6 +219,11 @@ public class apiController {
         if (image.name == null || !userNamePattern.matcher(image.name).matches()) {
             System.out.println(image.name + " is a really bad username, discarding");
             return new ResponseEntity<>("02 - Your username is bad and you should feel bad, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
+        }
+
+        if (image.author != null && !userNamePattern.matcher(image.author).matches()) {
+            System.out.println(image.author + " is a really bad author name, discarding");
+            return new ResponseEntity<>("03 - That author name is bad and the author should feel bad, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
         }
 
         String directory = "uploaded/" + image.name + "/";

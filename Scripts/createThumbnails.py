@@ -1,4 +1,5 @@
-import cymysql, os
+import cymysql
+import os
 from PIL import Image
 
 MAX_SIZE = (1000, 1000)

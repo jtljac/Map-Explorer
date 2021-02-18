@@ -1,6 +1,6 @@
-import cymysql, os, sys
+import cymysql
+import os
 from PIL import Image
-from time import sleep
 from jproperties import Properties
 
 MAX_SIZE = (1000, 1000)
@@ -51,6 +51,8 @@ try:
     cur.execute('SELECT id, filePath FROM maps WHERE thumbnail=0')
     temp = cur.fetchall()
 
+    print("Making thumbnails for " + str(len(temp)) + " images")
+
     count = 0
     for image in temp:
         count = (count + 1) % 10
@@ -61,3 +63,4 @@ finally:
     conn.commit()
     cur.close()
     conn.close()
+    print("Finished")

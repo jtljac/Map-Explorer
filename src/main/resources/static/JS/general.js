@@ -17,6 +17,16 @@ function ajaxSimplePOST(URL, payload, responseFunc) {
     xhttp.send(payload);
 }
 
+function ajaxSimplePUT(URL, payload, responseFunc) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        responseFunc(this);
+    };
+    xhttp.open("PUT", URL, true);
+    xhttp.setRequestHeader("Content-type", "application/json",)
+    xhttp.send(payload);
+}
+
 function ajaxSimpleDELETE(URL, responseFunc) {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

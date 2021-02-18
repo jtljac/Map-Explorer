@@ -4,6 +4,8 @@ class Kebab {
         this.kebabContent = kebabContent;
         this.open = false;
 
+        this.items = {}
+
         let scope = this;
         this.kebabButton.addEventListener("click", function (e) {
             if (scope.open) {
@@ -16,15 +18,21 @@ class Kebab {
         });
 
         for (let item of items) {
-            this.createButton(item);
+            this.appendButton(item);
         }
+    }
+
+    appendButton(item) {
+        this.kebabContent.appendChild(this.createButton(item));
+    }
+
+    prependButton(item) {
+        this.kebabContent.prepend(this.createButton(item));
     }
 
     createButton(item) {
         let button = document.createElement("Button");
         button.innerText = item.text;
-
-        this.kebabContent.appendChild(button);
 
         let scope = this;
         button.addEventListener("click", function () {
@@ -32,5 +40,11 @@ class Kebab {
             scope.kebabContent.classList.remove("active");
             scope.open = false;
         });
+
+        return button;
+    }
+
+    removeButton(index) {
+        this.kebabContent.removeChild(this.kebabContent.childNodes[index]);
     }
 }

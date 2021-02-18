@@ -10,6 +10,8 @@ public class Image {
 
     public String name;
 
+    public String author;
+
     public Integer squareWidth;
 
     public Integer squareHeight;
@@ -30,6 +32,14 @@ public class Image {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public Integer getSquareWidth() {

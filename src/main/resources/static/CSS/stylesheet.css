@@ -291,6 +291,8 @@ nav input[type="search"]::placeholder {
 
 #headerWrap h1 {
     border: 0;
+    overflow: auto;
+    overflow-wrap: break-word;
     margin: 0;
 }
 
@@ -415,7 +417,7 @@ nav input[type="search"]::placeholder {
 
     #tagWrap .tagObject {
         padding: 6px 16px;
-        margin: 2px 10px 2px 10px;
+        margin: 2px 0;
         width: 100%;
         font-size: larger;
     }

@@ -68,6 +68,13 @@ public class Map {
 
     public Map(){}
 
+    public void updateValues(MapUpdate update) {
+        this.squareWidth = update.getSquareWidth();
+        this.squareHeight = update.getSquareHeight();
+        this.author = update.getAuthor();
+        this.uploader = update.getUploader();
+    }
+
     public String getName() {
         return filePath.substring(filePath.lastIndexOf("/") + 1);
     }

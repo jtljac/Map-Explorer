@@ -7,6 +7,7 @@
         <script type="text/javascript" src="JS/general.js"></script>
         <script type="text/javascript" src="JS/tags.js"></script>
         <script type="text/javascript" src="JS/menu.js"></script>
+        <script type="text/javascript" src="JS/imagePage.js"></script>
         <script src="JS/navbar.js"></script>
         <title>${map.getNameWithoutExtension()}</title>
     </head>
@@ -17,18 +18,11 @@
                 <h1>${map.getNameWithoutExtension()}</h1>
                 <div class="kebab">
                     <button id="optionsButton"><span class="material-icons md-light">more_vert</span></button>
-                    <div id="optionsContent" class="kebabContent">
-                    </div>
+                    <div id="optionsContent" class="kebabContent"></div>
                 </div>
             </div>
-            <p>Uploaded by: ${map.uploader}</p>
-            <p>Resolution: ${map.width}x${map.height}</p>
-            <c:if test="${map.squareWidth != null && map.squareHeight != null}">
-                <p>Grid size: ${map.squareWidth}x${map.squareHeight}</p>
-            </c:if>
-            <c:if test="${map.uploadDate != null}">
-                <p>Upload date: ${map.getShortDate()}</p>
-            </c:if>
+            <div id="metadata">
+            </div>
             <img class="bigImage" src="${basePath}${map.filePath}"/>
             <div id="tagWrap">
                 <div class="inputWrap">
@@ -38,23 +32,38 @@
             </div>
         </main>
         <script>
-            const tag = new Tag(document.getElementById("tags"), document.getElementById("tagsButton"), document.getElementById("tagWrap"));
-            ajaxSimpleGet("/getTags", function (response) {
-                if (response.readyState === 4) {
-                    tag.tagOptions = JSON.parse(response.responseText);
-                }
-            });
+            const tag = new Tag(document.getElementById("tags"),
+                                document.getElementById("tagsButton"),
+                                document.getElementById("tagWrap"));
+
+            const theMetadata = new ImagePage(document.getElementById("metadata"),
+                <c:choose><c:when test="${map.author == null}">null</c:when><c:otherwise>"${map.author}"</c:otherwise></c:choose>,
+                "${map.uploader}",
+                ${map.width},
+                ${map.height},
+                <c:choose><c:when test="${map.squareWidth == null}">null</c:when><c:otherwise>${map.squareWidth}</c:otherwise></c:choose>,
+                <c:choose><c:when test="${map.squareHeight == null}">null</c:when><c:otherwise>${map.squareHeight}</c:otherwise></c:choose>,
+                "${map.getShortDate()}");
 
             let content = [
                 {
+                    "text": "Edit",
+                    "func": function() {
+                        theMetadata.makeEditor();
+                        kebab.removeButton(0);
+                    }
+                },
+                {
                     "text": "Delete",
                     "func": function() {
-                        ajaxSimpleDELETE("/deleteImage?id=${map.id}", function(response) {
-                            if (response.readyState === 4) {
-                                if (response.status === 200) window.open("/", "_self");
-                                else console.warn("Something has gone quite wrong");
-                            }
-                        });
+                        if (confirm("Are you sure you want to delete this image?")) {
+                            ajaxSimpleDELETE("/deleteImage?id=${map.id}", function(response) {
+                                if (response.readyState === 4) {
+                                    if (response.status === 200) window.open("/", "_self");
+                                    else console.warn("Something has gone quite wrong");
+                                }
+                            });
+                        }
                     }
                 }
             ];
