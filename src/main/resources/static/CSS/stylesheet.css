@@ -140,22 +140,21 @@ nav input[type="search"]::placeholder {
     nav #navOptions {
         display: block;
         height: 100%;
-        width: 0;
+        width: 150px;
         position: fixed;
         visibility: collapse;
         z-index: 1;
         top: 0;
         left: 0;
         overflow-x: hidden;
-        padding: 60px 0;
+        padding: 60px;
+        transform: translateX(-250px);
         background-color: #363636f0;
         transition: ease-in .2s;
     }
 
     nav #navOptions.open {
-        width: 150px;
-
-        padding: 60px;
+        transform: translateX(0px);
         visibility: visible;
     }
 
@@ -209,7 +208,7 @@ nav input[type="search"]::placeholder {
     text-decoration: inherit;
     color: inherit;
     transition: .1s ease-in;
-    border: 0 rgba(255, 255, 255, 0.0) solid;
+    border: 2px rgba(255, 255, 255, 0.0) solid;
 }
 
 .galleryItem .imgwrap {
@@ -220,13 +219,40 @@ nav input[type="search"]::placeholder {
     margin: auto;
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 .galleryItem a .imgwrap img {
     transition: .1s ease-in;
     height: 100%;
     width: 100%;
-    object-fit: contain;
+    object-fit: cover;
+}
+
+.galleryItem a .imgwrap .textContent {
+    display: flex;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: .2s;
+}
+
+.galleryItem a .imgwrap .textContent div {
+    margin: 10% auto auto;
+    width: 75%
+}
+
+.galleryItem a .imgwrap .textContent div h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+
+.galleryItem a .imgwrap .textContent div span {
+    display: block;
+    font-size: large;
 }
 
 @media (hover) {
@@ -236,7 +262,11 @@ nav input[type="search"]::placeholder {
     }
 
     .galleryItem a:hover .imgwrap img {
-        transform: scale(1.2);
+        filter: blur(2px);
+    }
+
+    .galleryItem a:hover .imgwrap div {
+        opacity: 1;
     }
 }
 

@@ -37,7 +37,7 @@ class ImagePage {
             this.addInfo("Map Author", this.author);
         this.addInfo("Uploader", this.uploader);
         this.addInfo("Resolution", this.width + "x" + this.height);
-        if (this.squareWidth !== null && this.squareHeight !== null);
+        if (this.squareWidth !== null && this.squareHeight !== null)
             this.addInfo("Grid Size", this.squareWidth + "x" + this.squareHeight);
         this.addInfo("Upload Date", this.uploadDate);
     }

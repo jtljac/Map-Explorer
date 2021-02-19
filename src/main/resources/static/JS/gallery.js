@@ -20,6 +20,12 @@ class Gallery {
         }
     }
 
+    createSpan(content) {
+        let span = document.createElement("span");
+        span.innerText = content;
+        return span;
+    }
+
     createGalleryItem(map) {
         let item = document.createElement("div");
         item.className = "galleryitem";
@@ -33,6 +39,21 @@ class Gallery {
         image.src = this.basePath + (map.thumbnail !== "" ? map.thumbnail : map.filePath);
         if (map.squareWidth && map.squareWidth) image.alt = map.squareWidth + "x" + map.squareHeight;
         wrap.appendChild(image);
+
+        let text = document.createElement("div");
+        text.className = "textContent";
+        let text2 = document.createElement("div");
+        text.appendChild(text2);
+        // Spans
+        let header = document.createElement("h2");
+        let name = map.filePath.split("/").pop().replaceAll(/[-_]+/g, " ");
+        header.innerText = name.substring(0, name.lastIndexOf("."));
+        text2.appendChild(header);
+        if (map.author != null) text2.appendChild(this.createSpan("Author: " + map.author));
+        text2.appendChild(this.createSpan("Uploader: " + map.uploader));
+        if (map.squareWidth != null && map.squareHeight != null) text2.appendChild(this.createSpan("Grid Size: " + map.squareWidth + "x" + map.squareHeight))
+
+        wrap.appendChild(text);
 
         return item;
     }

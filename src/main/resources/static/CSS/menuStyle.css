@@ -26,6 +26,7 @@
     visibility: collapse;
     display: flex;
     flex-direction: column;
+    border-radius: 5px;
 }
 
 .kebab .kebabContent.active {
@@ -45,6 +46,16 @@
     border-radius: 0;
 
     color: white;
+}
+
+@media only screen and (max-width: 650px) {
+    .kebab .kebabContent button {
+        font-size: larger;
+        min-width: 32mm;
+        min-height: 15mm;
+        height: 36px;
+        padding: 12px 24px;
+    }
 }
 
 .kebab .kebabContent button:focus{
