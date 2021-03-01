@@ -1,22 +1,16 @@
 package com.datdev.controller;
 
 import com.datdev.MapExplorerApplication;
-import com.datdev.model.Image;
 import com.datdev.model.Map;
 import com.datdev.repo.DuplicateRepo;
 import com.datdev.repo.MapRepo;
-import com.datdev.utils.SearchUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Optional;
 
 @Controller
 public class ImageController {
@@ -52,6 +46,20 @@ public class ImageController {
         model.addAttribute("map", map.get());
         model.addAttribute("basePath", MapExplorerApplication.basePath);
         return "/image";
+    }
+
+    @GetMapping("/nextimage")
+    public String nextImage(@RequestParam Integer currentid) {
+        Optional<Integer> nextMap = mapRepository.findNextID(currentid);
+
+        return nextMap.map(integer -> "redirect:/image?id=" + integer).orElseGet(() -> "redirect:/image?id=" + currentid);
+    }
+
+    @GetMapping("/previmage")
+    public String prevImage(@RequestParam Integer currentid) {
+        Optional<Integer> prevMap = mapRepository.findPrevID(currentid);
+
+        return prevMap.map(integer -> "redirect:/image?id=" + integer).orElseGet(() -> "redirect:/image?id=" + currentid);
     }
 
     @GetMapping("/duplicates")
