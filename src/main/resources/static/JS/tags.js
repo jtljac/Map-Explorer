@@ -157,7 +157,7 @@ class Tag {
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        ajaxSimplePUT("setTags/" + urlParams.get("id"), JSON.stringify(theTags), function (){});
+        ajaxSimplePUT("/api/images/" + urlParams.get("id") + "/tags", JSON.stringify(theTags), function (){});
         this.hideSubmitButton();
     }
 }

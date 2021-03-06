@@ -47,20 +47,20 @@ public class apiController {
     @PersistenceUnit
     private EntityManagerFactory emf;
 
-    @GetMapping(value = "/getTags", produces = "application/json")
+    @GetMapping(value = "/api/tags", produces = "application/json")
     @ResponseBody
     public List<String> getTags(){
         return mapRepository.findDistinctTags();
     }
 
-    @GetMapping(value = "/getImage", produces = "application/json")
+    @GetMapping(value = "/api/images/{id}", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Map> getImage(@RequestParam int id) {
+    public ResponseEntity<Map> getImage(@PathVariable int id) {
         Optional<Map> map = mapRepository.findById(id);
         return map.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping(value = "/getImages", produces = "application/json")
+    @GetMapping(value = "/api/images", produces = "application/json")
     @ResponseBody
     public ResponseEntity<List<MapReduced>> getImages(@RequestParam(required = false, defaultValue = "") String search,
                                                       @RequestParam(required = false, defaultValue = "name") String order,
@@ -124,8 +124,8 @@ public class apiController {
         return entity;
     }
 
-    @DeleteMapping("/deleteImage")
-    public ResponseEntity<String> deleteImage(@RequestParam int id) {
+    @DeleteMapping("/api/images/{id}")
+    public ResponseEntity<String> deleteImage(@PathVariable int id) {
         Optional<Map> map = mapRepository.findById(id);
 
         if (map.isPresent()) {
@@ -147,7 +147,7 @@ public class apiController {
     }
 
 
-    @PutMapping("/setTags/{id}")
+    @PutMapping("/api/images/{id}/tags")
     @ResponseBody
     public ResponseEntity<String> setImageTags(@PathVariable int id, @RequestBody String[] newTags) {
         Optional<Map> map = mapRepository.findById(id);
@@ -162,7 +162,7 @@ public class apiController {
         }
     }
 
-    @PutMapping(value = "/updateImage/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/api/images/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<String> updateImageInfo(@PathVariable int id, @RequestBody MapUpdate theMap) {
         Optional<Map> map = mapRepository.findById(id);
@@ -185,7 +185,7 @@ public class apiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value = "/uploadImage", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/api/images", consumes = {"multipart/form-data"})
     @ResponseBody
     public ResponseEntity<String> uploadImage(@ModelAttribute Image image) throws IOException, NoSuchAlgorithmException {
         System.out.println("Received image from " + image.name);

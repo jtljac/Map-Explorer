@@ -69,7 +69,7 @@ class Gallery {
     getImages() {
         if (!this.gettingImages) {
             let scope = this;
-            ajaxSimpleGet("/getImages?search=" + this.search + "&order=" + this.order + "&orderdir=" + this.orderDir + "&offset=" + (this.offset + this.numPerPage * this.depth) + "&numPerPage=" + this.numPerPage, function (response) {
+            ajaxSimpleGet("/api/images?search=" + this.search + "&order=" + this.order + "&orderdir=" + this.orderDir + "&offset=" + (this.offset + this.numPerPage * this.depth) + "&numPerPage=" + this.numPerPage, function (response) {
                 if (response.readyState === 4) {
                     if (response.status === 200) scope.callback(response);
                     else if (response.status === 204) {

@@ -57,7 +57,7 @@
                     "text": "Delete",
                     "func": function() {
                         if (confirm("Are you sure you want to delete this image?")) {
-                            ajaxSimpleDELETE("/deleteImage?id=${map.id}", function(response) {
+                            ajaxSimpleDELETE("/api/image/${map.id}", function(response) {
                                 if (response.readyState === 4) {
                                     if (response.status === 200) window.open("/", "_self");
                                     else console.warn("Something has gone quite wrong");

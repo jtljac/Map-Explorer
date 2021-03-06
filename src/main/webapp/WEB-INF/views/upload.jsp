@@ -38,7 +38,7 @@
                         }
                     }
                 };
-                xhttp.open("POST", "/uploadImage", true);
+                xhttp.open("POST", "/api/images", true);
                 xhttp.send(form);
 
                 return false;
