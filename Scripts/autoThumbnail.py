@@ -4,6 +4,7 @@ from PIL import Image
 from jproperties import Properties
 
 MAX_SIZE = (1000, 1000)
+max_count = 50
 
 
 def makeThumbnail(cursor, mapsDir, image):
@@ -51,13 +52,16 @@ try:
     cur.execute('SELECT id, filePath FROM maps WHERE thumbnail=0')
     temp = cur.fetchall()
 
-    print("Making thumbnails for " + str(len(temp)) + " images")
+    print("Making thumbnails for " + str(min(len(temp), max_count)) + " images")
 
-    count = 0
+    total = 0
     for image in temp:
-        count = (count + 1) % 10
+        total += total
+        count = total % 10
         makeThumbnail(cur, "../maps/", image)
-        if count == 0:
+        if total == max_count:
+            break
+        elif count == 0:
             conn.commit()
 finally:
     conn.commit()
