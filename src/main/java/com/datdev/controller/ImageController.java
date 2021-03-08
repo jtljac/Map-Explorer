@@ -23,8 +23,8 @@ public class ImageController {
     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(required = false, defaultValue = "") String search,
-                        @RequestParam(required = false, defaultValue = "name") String order,
-                        @RequestParam(required = false, defaultValue = "asc") String orderdir,
+                        @RequestParam(required = false, defaultValue = "date") String order,
+                        @RequestParam(required = false, defaultValue = "desc") String orderdir,
                         @RequestParam(required = false, defaultValue = "0") int offset,
                         @RequestParam(required = false, defaultValue = "50") int numPerPage) {
 
