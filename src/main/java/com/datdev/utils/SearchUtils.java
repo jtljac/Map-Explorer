@@ -6,11 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SearchUtils {
-    final static Pattern searchLikeTagPattern = Pattern.compile("\\w{3,30}", Pattern.CASE_INSENSITIVE);
-    final static Pattern searchNotLikeTagPattern = Pattern.compile("-(\\w{3,30})", Pattern.CASE_INSENSITIVE);
+    final static Pattern searchLikeTagPattern = Pattern.compile("-?\\w{3,30}", Pattern.CASE_INSENSITIVE);
     final static Pattern searchExactlyTagPattern = Pattern.compile("\"(\\w{3,30})\"", Pattern.CASE_INSENSITIVE);
     final static Pattern searchGridTagPattern = Pattern.compile("([<>]?[\\d*]+?)x([<>]?[\\d*]+)", Pattern.CASE_INSENSITIVE);
-    final static Pattern searchUserTagPattern = Pattern.compile("uploader:([\\w_-]{1,30})", Pattern.CASE_INSENSITIVE);
+    final static Pattern searchColumnTagPattern = Pattern.compile("(uploader|author):([\\w_-]{1,30})", Pattern.CASE_INSENSITIVE);
 
     public static String parseSquare(String value) {
         if (value.charAt(0) == '<' || value.charAt(0) == '>') {
@@ -30,12 +29,10 @@ public class SearchUtils {
         for (String param : params) {
             if ((match = searchGridTagPattern.matcher(param)).matches()) {
                 tagSQL.add(" (squareWidth " + SearchUtils.parseSquare(match.group(1)) + " AND squareHeight " + SearchUtils.parseSquare(match.group(2)) + ")");
-            } else if ((match = searchUserTagPattern.matcher(param)).matches()) {
-                bySQL.add(" uploader = '" + match.group(1) + "'");
+            } else if ((match = searchColumnTagPattern.matcher(param)).matches()) {
+                bySQL.add(" " + match.group(1) + " = '" + match.group(2) + "'");
             } else if ((match = searchLikeTagPattern.matcher(param)).matches()) {
-                tagSQL.add(" tag LIKE '%" + param + "%'");
-            } else if ((match = searchNotLikeTagPattern.matcher(param)).matches()) {
-                notSQL.add(" tag LIKE '%" + match.group(1) + "%'");
+                (param.charAt(0) == '-' ? notSQL : tagSQL).add(" tag LIKE '%" + match.group(1) + "%'");
             } else if ((match = searchExactlyTagPattern.matcher(param)).matches()) {
                 tagSQL.add(" tag " + " = \"" + match.group(1) + "\"");
             }
