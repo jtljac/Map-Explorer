@@ -56,8 +56,8 @@
                 {
                     "text": "Delete",
                     "func": function() {
-                        if (confirm("Are you sure you want to delete this image?")) {
-                            ajaxSimpleDELETE("/api/images/${map.id}", function(response) {
+                        if (confirm("Are you sure you want to delete and blacklist this image?")) {
+                            ajaxSimpleDELETE("/api/images/${map.id}?blacklist=true", function(response) {
                                 if (response.readyState === 4) {
                                     if (response.status === 200) window.open("/", "_self");
                                     else console.warn("Something has gone quite wrong");

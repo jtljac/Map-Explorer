@@ -18,6 +18,12 @@ CREATE TABLE maps (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE blacklist (
+    imageHash VARCHAR(32) DEFAULT NULL,
+    banDate DATETIME NOT NULL DEFAULT current_timestamp(),
+    primary key (imageHash)
+);
+
 CREATE TABLE tags (
     mapID INT NOT NULL,
     tag varchar(30) NOT NULL,

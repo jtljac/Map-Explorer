@@ -3,10 +3,9 @@ package com.datdev.controller;
 import com.datdev.MapExplorerApplication;
 import com.datdev.enums.SearchDir;
 import com.datdev.enums.SearchMode;
-import com.datdev.model.Image;
+import com.datdev.model.*;
 import com.datdev.model.Map;
-import com.datdev.model.MapReduced;
-import com.datdev.model.MapUpdate;
+import com.datdev.repo.BlackListRepo;
 import com.datdev.repo.MapRepo;
 import com.datdev.utils.FileUtil;
 import com.datdev.utils.SearchUtils;
@@ -43,6 +42,9 @@ public class apiController {
 
     @Autowired
     MapRepo mapRepository;
+
+    @Autowired
+    BlackListRepo blackListRepository;
 
     @PersistenceUnit
     private EntityManagerFactory emf;
@@ -125,7 +127,7 @@ public class apiController {
     }
 
     @DeleteMapping("/api/images/{id}")
-    public ResponseEntity<String> deleteImage(@PathVariable int id) {
+    public ResponseEntity<String> deleteImage(@PathVariable int id, @RequestParam(required = false, defaultValue = "false") boolean blacklist) {
         Optional<Map> map = mapRepository.findById(id);
 
         if (map.isPresent()) {
@@ -137,6 +139,10 @@ public class apiController {
             } catch (IOException e) {
                 System.out.println("Failed to delete file" + map.get().getFilePath());
             }
+
+            BlackList theBlackList = new BlackList(map.get().getImageHash());
+
+            blackListRepository.save(theBlackList);
 
             mapRepository.deleteById(id);
 
@@ -207,6 +213,11 @@ public class apiController {
         if (mapRepository.existsByImageHash(imageHash)) {
             System.out.println("Image already uploaded, discarding");
             return new ResponseEntity<>("00 - Image already uploaded", HttpStatus.BAD_REQUEST);
+        }
+
+        if (blackListRepository.existsById(imageHash)) {
+            System.out.println("Image has been blacklisted, discarding");
+            return new ResponseEntity<>("04 - Image has been blacklisted", HttpStatus.BAD_REQUEST);
         }
 
         String name = image.image.getOriginalFilename();
