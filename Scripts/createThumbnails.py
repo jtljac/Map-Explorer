@@ -23,7 +23,7 @@ if mapsDir[-1] != "/":
 conn = cymysql.connect(host="localhost", user=input("Enter DB Username: "), passwd=input("Enter DB Password: "), db=input("Enter DB database: "))
 cur = conn.cursor()
 
-cur.execute('SELECT id, filePath FROM maps')
+cur.execute('SELECT id, filePath FROM maps where thumbnail = false')
 temp = cur.fetchall()
 
 count = 0

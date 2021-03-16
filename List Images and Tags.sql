@@ -1,0 +1,1 @@
+SELECT id, filePath, CONCAT(width, 'X', height) as resolution, CONCAT(squareHeight, 'X', squareHeight) as squares, uploader, imageHash, (SELECT GROUP_CONCAT(tag SEPARATOR ', ') FROM tags t where t.mapID = m.id) as tags FROM maps m
