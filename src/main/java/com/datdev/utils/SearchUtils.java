@@ -34,7 +34,7 @@ public class SearchUtils {
             } else if ((match = searchLikeTagPattern.matcher(param)).matches()) {
                 final List<String> strings = param.charAt(0) == '-' ? notSQL : tagSQL;
                 strings.add(" tag LIKE '%" + match.group(1) + "%'");
-                strings.add(" tag LIKE '%" + match.group(1) + "%'");
+                strings.add(" filepath LIKE '%" + match.group(1) + "%'");
             } else if ((match = searchExactlyTagPattern.matcher(param)).matches()) {
                 tagSQL.add(" filepath = \"" + match.group(1) + "\"");
                 tagSQL.add(" tag = \"" + match.group(1) + "\"");
