@@ -23,14 +23,19 @@ public class ImageController {
     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(required = false, defaultValue = "") String search,
-                        @RequestParam(required = false, defaultValue = "random") String order,
+                        @RequestParam(required = false) Optional<String> order,
                         @RequestParam(required = false, defaultValue = "desc") String orderdir,
                         @RequestParam(required = false, defaultValue = "0") int offset,
                         @RequestParam(required = false, defaultValue = "50") int numPerPage) {
 
         model.addAttribute("offset", offset);
         model.addAttribute("search", search);
-        model.addAttribute("order", order);
+        if (order.isPresent()) {
+            model.addAttribute("order", order.get());
+        } else {
+            model.addAttribute("order", (search.equals("") ? "random" : "date"));
+        }
+
         model.addAttribute("orderdir", orderdir);
         model.addAttribute("numPerPage", numPerPage);
         model.addAttribute("basePath", MapExplorerApplication.basePath);
