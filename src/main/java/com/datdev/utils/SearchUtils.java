@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SearchUtils {
-    final static Pattern searchLikeTagPattern = Pattern.compile("-?\\w{3,30}", Pattern.CASE_INSENSITIVE);
+    final static Pattern searchLikeTagPattern = Pattern.compile("-?(\\w{3,30})", Pattern.CASE_INSENSITIVE);
     final static Pattern searchExactlyTagPattern = Pattern.compile("\"(\\w{3,30})\"", Pattern.CASE_INSENSITIVE);
     final static Pattern searchGridTagPattern = Pattern.compile("([<>]?[\\d*]+?)x([<>]?[\\d*]+)", Pattern.CASE_INSENSITIVE);
     final static Pattern searchColumnTagPattern = Pattern.compile("(uploader|author):([\\w_-]{1,30})", Pattern.CASE_INSENSITIVE);
