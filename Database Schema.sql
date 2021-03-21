@@ -21,7 +21,22 @@ CREATE TABLE maps (
 CREATE TABLE blacklist (
     imageHash VARCHAR(32) DEFAULT NULL,
     banDate DATETIME NOT NULL DEFAULT current_timestamp(),
-    primary key (imageHash)
+    PRIMARY KEY (imageHash)
+);
+
+CREATE TABLE collection (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    description TEXT DEFAULT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE mapCollection (
+    mapID INT NOT NULL,
+    collectionID INT NOT NULL,
+    PRIMARY KEY (mapID, collectionID),
+    foreign key (mapID) REFERENCES maps (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    foreign key (collectionID) REFERENCES collection (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE tags (
