@@ -27,6 +27,7 @@ CREATE TABLE blacklist (
 CREATE TABLE collection (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
+    creator VARCHAR(25) NOT NULL,
     description TEXT DEFAULT NULL,
     PRIMARY KEY (id)
 );

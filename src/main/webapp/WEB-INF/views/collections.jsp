@@ -12,10 +12,17 @@
         <%@ include file="navbar.jspf" %>
         <main>
             <div id="gallery" class="gallery">
+                <div class="galleryitem">
+                    <a href="/createcollection">
+                        <div class="imgwrap">
+                            <span style="font-size: 100px" class="material-icons md-light">add_circle_outline</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </main>
         <script>
-            const search = new MapGallery(document.getElementById("gallery"), "${basePath}", ${offset}, ${numPerPage}, "${order.replace("\"", "\\\"")}", "${orderdir.replace("\"", "\\\"")}", "${search.replace("\"", "\\\"")}");
+            const gallery = new CollectionsGallery(document.getElementById("gallery"), "${basePath}", ${offset}, ${numPerPage}, "${order.replace("\"", "\\\"")}", "${orderdir.replace("\"", "\\\"")}");
         </script>
     </body>
 </html>

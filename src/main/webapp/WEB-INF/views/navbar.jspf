@@ -3,11 +3,12 @@
     <div id="navOptions">
         <button type="button" id="navMenuCloseButton"><span class="material-icons md-light">close</span></button>
         <a href="/" style="border-radius: 0 0 0 8px"><span>Home</span></a>
+        <a href="/collection"><span>Collections</span></a>
         <a href="/uploadImage"><span>Upload</span></a>
         <a href="/review"><span>Review</span></a>
         <a href="/duplicates"><span>Duplicates</span></a>
     </div>
-    <input id="searchText" value="${search.replace("\"", "&quot;")}"  type="search" placeholder="Search for some tags"/>
+    <input id="searchText" value="${search.replace("\"", "&quot;")}" autocomplete="off" type="search" placeholder="Search for some tags"/>
     <button id="search" type="submit"><span class="material-icons md-light">search</span></button>
 </nav>
 <script>

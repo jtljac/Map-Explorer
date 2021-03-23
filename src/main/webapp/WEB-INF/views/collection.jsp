@@ -11,11 +11,15 @@
     <body>
         <%@ include file="navbar.jspf" %>
         <main>
+            <section>
+                <h1>${collection.name}</h1>
+                <p>${collection.description}</p>
+            </section>
             <div id="gallery" class="gallery">
             </div>
         </main>
         <script>
-            const search = new MapGallery(document.getElementById("gallery"), "${basePath}", ${offset}, ${numPerPage}, "${order.replace("\"", "\\\"")}", "${orderdir.replace("\"", "\\\"")}", "${search.replace("\"", "\\\"")}");
+            const gallery = new CollectionGallery(document.getElementById("gallery"), "${basePath}", ${offset}, ${numPerPage}, "${order.replace("\"", "\\\"")}", "${orderdir.replace("\"", "\\\"")}", ${collection.id});
         </script>
     </body>
 </html>

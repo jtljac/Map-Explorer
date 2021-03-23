@@ -5,6 +5,7 @@ import com.datdev.enums.SearchDir;
 import com.datdev.enums.SearchMode;
 import com.datdev.model.*;
 import com.datdev.model.Map;
+import com.datdev.model.uploads.MapUploader;
 import com.datdev.repo.BlackListRepo;
 import com.datdev.repo.MapRepo;
 import com.datdev.utils.FileUtil;
@@ -36,7 +37,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Controller
-public class apiController {
+public class ImageApiController {
     static final Pattern fileNamePattern = Pattern.compile("[\\w \\-)`(\\[\\]*]{4,50}\\.(png|jpg)");
     static final Pattern userNamePattern = Pattern.compile("[\\w-]{1,25}");
 
@@ -148,7 +149,7 @@ public class apiController {
 
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("00 - Unknown Image", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("01 - Unknown Image", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -193,12 +194,12 @@ public class apiController {
 
     @PostMapping(value = "/api/images", consumes = {"multipart/form-data"})
     @ResponseBody
-    public ResponseEntity<String> uploadImage(@ModelAttribute Image image) throws IOException, NoSuchAlgorithmException {
-        System.out.println("Received image from " + image.name);
+    public ResponseEntity<String> uploadImage(@ModelAttribute MapUploader mapUploader) throws IOException, NoSuchAlgorithmException {
+        System.out.println("Received image from " + mapUploader.name);
 
         // Check Hash
         MessageDigest md = MessageDigest.getInstance("MD5");
-        InputStream stream = image.image.getInputStream();
+        InputStream stream = mapUploader.image.getInputStream();
         byte[] data = new byte[2048];
         int numBytes;
         while ((numBytes = stream.read(data)) != -1) {
@@ -220,24 +221,24 @@ public class apiController {
             return new ResponseEntity<>("04 - Image has been blacklisted", HttpStatus.BAD_REQUEST);
         }
 
-        String name = image.image.getOriginalFilename();
+        String name = mapUploader.image.getOriginalFilename();
 
         if(!fileNamePattern.matcher(name).matches()) {
             System.out.println(name + " is a really bad name, discarding");
             return new ResponseEntity<>("01 - Bad name format, please clean it up", HttpStatus.BAD_REQUEST);
         }
 
-        if (image.name == null || !userNamePattern.matcher(image.name).matches()) {
-            System.out.println(image.name + " is a really bad username, discarding");
+        if (mapUploader.name == null || !userNamePattern.matcher(mapUploader.name).matches()) {
+            System.out.println(mapUploader.name + " is a really bad username, discarding");
             return new ResponseEntity<>("02 - Your username is bad and you should feel bad, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
         }
 
-        if (image.author != null && !userNamePattern.matcher(image.author).matches()) {
-            System.out.println(image.author + " is a really bad author name, discarding");
+        if (mapUploader.author != null && !userNamePattern.matcher(mapUploader.author).matches()) {
+            System.out.println(mapUploader.author + " is a really bad author name, discarding");
             return new ResponseEntity<>("03 - That author name is bad and the author should feel bad, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
         }
 
-        String directory = "uploaded/" + image.name + "/";
+        String directory = "uploaded/" + mapUploader.name + "/";
 
         Path path = Paths.get(MapExplorerApplication.basePath + directory);
 
@@ -250,7 +251,7 @@ public class apiController {
         try {
             System.out.println("Saving to disk");
             fileName = FileUtil.getUnownedFileName(path, theName[0], theName[1]);
-            stream = image.image.getInputStream();
+            stream = mapUploader.image.getInputStream();
             Files.copy(stream, path.resolve(fileName));
             stream.close();
         } catch (InvalidFileNameException e) {
@@ -260,7 +261,7 @@ public class apiController {
 
         System.out.println("Getting Resolution");
 
-        stream = image.image.getInputStream();
+        stream = mapUploader.image.getInputStream();
         int width = 0, height = 0;
 
         try (ImageInputStream in = ImageIO.createImageInputStream(stream)) {
@@ -279,9 +280,9 @@ public class apiController {
 
         stream.close();
 
-        Map map = new Map(directory + fileName, width, height, image.squareWidth, image.squareHeight, image.name, imageHash);
+        Map map = new Map(directory + fileName, width, height, mapUploader.squareWidth, mapUploader.squareHeight, mapUploader.name, imageHash);
 
-        for (String tag : image.tags) {
+        for (String tag : mapUploader.tags) {
             map.addTag(tag);
         }
 

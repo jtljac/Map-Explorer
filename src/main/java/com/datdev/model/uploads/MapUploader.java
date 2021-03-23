@@ -1,11 +1,11 @@
-package com.datdev.model;
+package com.datdev.model.uploads;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Image {
+public class MapUploader {
     public MultipartFile image;
 
     public String name;

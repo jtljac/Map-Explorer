@@ -2,6 +2,9 @@ package com.datdev.controller;
 
 import com.datdev.MapExplorerApplication;
 import com.datdev.model.Map;
+import com.datdev.model.MapCollection;
+import com.datdev.model.MapCollectionReduced;
+import com.datdev.repo.CollectionRepo;
 import com.datdev.repo.DuplicateRepo;
 import com.datdev.repo.MapRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Optional;
 
 @Controller
-public class ImageController {
+public class WebController {
     @Autowired
     MapRepo mapRepository;
+
+    @Autowired
+    CollectionRepo collectionRepository;
 
     @Autowired
     DuplicateRepo duplicateRepo;
@@ -40,6 +46,31 @@ public class ImageController {
         model.addAttribute("numPerPage", numPerPage);
         model.addAttribute("basePath", MapExplorerApplication.basePath);
         return "/index";
+    }
+
+    @GetMapping("/collection")
+    public String collection(Model model,
+                             @RequestParam(required = false) Integer id,
+                             @RequestParam(required = false, defaultValue = "name") String order,
+                             @RequestParam(required = false, defaultValue = "desc") String orderdir,
+                             @RequestParam(required = false, defaultValue = "0") int offset,
+                             @RequestParam(required = false, defaultValue = "50") int numPerPage) {
+        model.addAttribute("offset", offset);
+        model.addAttribute("order", order);
+
+        model.addAttribute("orderdir", orderdir);
+        model.addAttribute("numPerPage", numPerPage);
+        model.addAttribute("basePath", MapExplorerApplication.basePath);
+
+        if (id == null) {
+            return "collections";
+        }
+        Optional<MapCollection> collection = collectionRepository.findById(id);
+        if (collection.isEmpty()) return "redirect:/";
+
+        model.addAttribute("collection", new MapCollectionReduced(collection.get()));
+
+        return "collection";
     }
 
     @GetMapping("/image")
@@ -77,5 +108,10 @@ public class ImageController {
     @GetMapping("uploadImage")
     public String upload(Model model) {
         return "/upload";
+    }
+
+    @GetMapping("/createcollection")
+    public String collection(Model model) {
+        return "/createCollection";
     }
 }

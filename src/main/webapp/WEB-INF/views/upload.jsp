@@ -20,7 +20,7 @@
                 form.append("name", document.getElementById("username").value);
                 form.append("squareWidth", document.getElementById("squareWidth").value);
                 form.append("squareHeight", document.getElementById("squareHeight").value);
-                form.append("image", document.getElementById("image").files[0]);
+                form.append("mapUploader", document.getElementById("mapUploader").files[0]);
                 for (let theTag of tag.tags) {
                     form.append("tags", theTag.innerText);
                 }
@@ -51,22 +51,22 @@
             <form action="#" onsubmit="return doSubmit()">
                 <p id="theError"></p>
                 <h2>Username:</h2>
-                <input id="username" type="text" required/>
+                <input id="username" type="text" autocomplete="off" required/>
 
                 <h2>Square width:</h2>
-                <input id="squareWidth" type="number"/>
+                <input id="squareWidth" type="number" autocomplete="off"/>
 
                 <h2>Square Height:</h2>
-                <input id="squareHeight" type="number"/>
+                <input id="squareHeight" type="number" autocomplete="off"/>
 
                 <h2>Image:</h2>
-                <input id="image" type="file" accept="image/png, image/jpeg" required/>
+                <input id="mapUploader" type="file" accept="mapUploader/png, mapUploader/jpeg" required/>
 
                 <h2>tags:</h2>
                 <p id="tagWarn" style="display: none">Please add some tags</p>
                 <div id="tagWrap">
                     <div class="inputWrap">
-                        <input minlength="2" type="text" id="tags" class="tagInput rounded" name="theTags"/>
+                        <input minlength="2" type="text" id="tags" class="tagInput rounded" autocomplete="off" name="theTags"/>
                     </div>
                 </div>
 

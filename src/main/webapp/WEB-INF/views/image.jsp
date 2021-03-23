@@ -26,7 +26,7 @@
             <img class="bigImage" src="${basePath}${map.filePath}"/>
             <div id="tagWrap">
                 <div class="inputWrap">
-                    <input minlength="2" type="text" id="tags" class="tagInput rounded" name="theTags" value="${map.getTagsAsString()}"/>
+                    <input minlength="2" type="text" id="tags" class="tagInput rounded" name="theTags" value="${map.getTagsAsString()}" autocomplete="off"/>
                     <button id="tagsButton" type="submit" class="tagButton hidden">Update Tags</button>
                 </div>
             </div>
@@ -54,9 +54,15 @@
                     }
                 },
                 {
+                    "text": "Add to collection",
+                    "func": function() {
+                        // TODO
+                    }
+                },
+                {
                     "text": "Delete",
                     "func": function() {
-                        if (confirm("Are you sure you want to delete and blacklist this image?")) {
+                        if (confirm("Are you sure you want to delete and blacklist this mapUploader?")) {
                             ajaxSimpleDELETE("/api/images/${map.id}?blacklist=true", function(response) {
                                 if (response.readyState === 4) {
                                     if (response.status === 200) window.open("/", "_self");
