@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -165,7 +164,7 @@ public class CollectionApiController {
         }
 
         String sqlString =  "SELECT DISTINCT id, filePath, thumbnail, width, height, squareWidth, squareHeight, author, uploader, uploadDate, imageHash, toReview " +
-                            "FROM maps INNER JOIN mapcollection ON maps.id=mapcollection.mapID " +
+                            "FROM maps INNER JOIN mapCollection ON maps.id=mapCollection.mapID " +
                             "WHERE collectionID =" + id;
         sqlString += " ORDER BY ";
         switch (searchMode) {
