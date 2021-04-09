@@ -21,7 +21,7 @@
                 form.append("author", document.getElementById("author").value);
                 form.append("squareWidth", document.getElementById("squareWidth").value);
                 form.append("squareHeight", document.getElementById("squareHeight").value);
-                form.append("mapUploader", document.getElementById("mapUploader").files[0]);
+                form.append("image", document.getElementById("image").files[0]);
                 for (let theTag of tag.tags) {
                     form.append("tags", theTag.innerText);
                 }
