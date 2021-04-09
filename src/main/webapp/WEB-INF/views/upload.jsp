@@ -18,6 +18,7 @@
 
                 let form = new FormData();
                 form.append("name", document.getElementById("username").value);
+                form.append("author", document.getElementById("author").value);
                 form.append("squareWidth", document.getElementById("squareWidth").value);
                 form.append("squareHeight", document.getElementById("squareHeight").value);
                 form.append("mapUploader", document.getElementById("mapUploader").files[0]);
@@ -53,7 +54,8 @@
                 <h2>Username:</h2>
                 <input id="username" type="text" autocomplete="off" required/>
 
-                <input id="author" type="text" autocomplete="off" required/>
+                <h2>Author:</h2>
+                <input id="author" type="text" autocomplete="off"/>
 
                 <h2>Square width:</h2>
                 <input id="squareWidth" type="number" autocomplete="off"/>
