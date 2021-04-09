@@ -53,6 +53,8 @@
                 <h2>Username:</h2>
                 <input id="username" type="text" autocomplete="off" required/>
 
+                <input id="author" type="text" autocomplete="off" required/>
+
                 <h2>Square width:</h2>
                 <input id="squareWidth" type="number" autocomplete="off"/>
 
@@ -60,7 +62,7 @@
                 <input id="squareHeight" type="number" autocomplete="off"/>
 
                 <h2>Image:</h2>
-                <input id="mapUploader" type="file" accept="mapUploader/png, mapUploader/jpeg" required/>
+                <input id="image" type="file" accept="image/png, image/jpeg" required/>
 
                 <h2>tags:</h2>
                 <p id="tagWarn" style="display: none">Please add some tags</p>
