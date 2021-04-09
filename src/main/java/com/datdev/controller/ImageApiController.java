@@ -233,7 +233,7 @@ public class ImageApiController {
             return new ResponseEntity<>("02 - Your username is bad and you should feel bad, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
         }
 
-        if (mapUploader.author != null && !userNamePattern.matcher(mapUploader.author).matches()) {
+        if (mapUploader.author != null && !mapUploader.author.isEmpty() && !userNamePattern.matcher(mapUploader.author).matches()) {
             System.out.println(mapUploader.author + " is a really bad author name, discarding");
             return new ResponseEntity<>("03 - That author name is bad and the author should feel bad, it should only contain letters, numbers, dashes, and underscores", HttpStatus.BAD_REQUEST);
         }
