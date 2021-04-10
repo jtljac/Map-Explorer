@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class CollectionApiController {
                                                                      @RequestParam(required = false, defaultValue = "asc") String orderdir,
                                                                      @RequestParam(required = false, defaultValue = "0") int offset,
                                                                      @RequestParam(required = false, defaultValue = "30") int numPerPage) {
-        List<MapCollection> collections = collectionRepository.findAll(PageRequest.of(offset, numPerPage)).getContent();
+        List<MapCollection> collections = collectionRepository.findAll((Pageable) PageRequest.of(offset, numPerPage));
 
         ResponseEntity<List<MapCollectionReduced>> entity;
         if (collections.isEmpty()) entity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
