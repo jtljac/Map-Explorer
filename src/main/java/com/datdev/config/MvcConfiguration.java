@@ -1,4 +1,4 @@
-package com.datdev.Config;
+package com.datdev.config;
 
 import com.datdev.MapExplorerApplication;
 import org.springframework.context.annotation.Configuration;

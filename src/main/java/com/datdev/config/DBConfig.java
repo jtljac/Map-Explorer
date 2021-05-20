@@ -1,4 +1,4 @@
-package com.datdev.Config;
+package com.datdev.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
