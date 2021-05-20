@@ -2,7 +2,7 @@ import cymysql
 
 collectionID = 1
 
-conn = cymysql.connect(host="192.168.0.40", user=input("Enter DB Username: "), passwd=input("Enter DB Password: "), db=input("Enter DB database: "))
+conn = cymysql.connect(host=input("Enter server address: "), user=input("Enter DB Username: "), passwd=input("Enter DB Password: "), db=input("Enter DB database: "))
 cur = conn.cursor()
 
 cur.execute("SELECT id FROM maps WHERE uploader='czepeku'")
