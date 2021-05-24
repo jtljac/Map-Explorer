@@ -16,7 +16,7 @@ public class MapFoundry {
         file_link = "http://" + url.getHost() + "/maps/" + theMap.filePath;
 
         if (theMap.squareWidth != null) {
-            grid_size = String.valueOf((float) theMap.squareHeight / (float) theMap.squareWidth);
+            grid_size = String.valueOf(theMap.width / theMap.squareWidth);
         } else {
             grid_size = null;
         }
