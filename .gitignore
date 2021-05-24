@@ -48,3 +48,5 @@ Docker/
 # Cache from image comparison
 Scripts/cache/
 Scripts/results.json
+
+mysql.properties
