@@ -24,9 +24,12 @@ import javax.imageio.stream.ImageInputStream;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -293,5 +296,19 @@ public class ImageApiController {
         System.out.println("Added Map: " + map.toString());
 
         return new ResponseEntity<>(String.valueOf(map.getId()), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/api/foundry/{id}")
+    @ResponseBody
+    public ResponseEntity<MapFoundry> foundry(HttpServletRequest request, @PathVariable("id") int id) throws MalformedURLException {
+        Optional<Map> map = mapRepository.findById(id);
+
+        if (map.isPresent()) {
+            MapFoundry theMap = new MapFoundry(map.get(), request.getRequestURL().toString());
+
+            return new ResponseEntity<>(theMap, HttpStatus.OK);
+        } else {
+            return new ResponseEntity("0 - Unknown Map ID", HttpStatus.BAD_REQUEST);
+        }
     }
 }
