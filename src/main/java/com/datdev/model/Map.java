@@ -1,5 +1,6 @@
 package com.datdev.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -75,18 +76,21 @@ public class Map {
         this.uploader = update.getUploader();
     }
 
-    public String getName() {
+    @JsonIgnore
+    public String getFileName() {
         return filePath.substring(filePath.lastIndexOf("/") + 1);
     }
 
-    public String getExtension() {
-        int temp = getName().lastIndexOf(".");
-        return (temp == -1 ? "" : getName().substring(temp));
+    public String getName() {
+        String name = getFileName();
+        int temp = name.lastIndexOf(".");
+        return (temp == -1 ? name : name.substring(0, temp));
     }
 
-    public String getNameWithoutExtension() {
-        int temp = getName().lastIndexOf(".");
-        return (temp == -1 ? getName() : getName().substring(0, temp));
+    public String getExtension() {
+        String name = getFileName();
+        int temp = name.lastIndexOf(".");
+        return (temp == -1 ? "" : name.substring(temp + 1));
     }
 
     public int getId() {
@@ -104,7 +108,7 @@ public class Map {
     public String getThumbnailPath() {
         if (thumbnail) {
             String temp = filePath.substring(0, filePath.lastIndexOf("."));
-            return temp + "thumbnail" + getExtension();
+            return temp + "thumbnail" + "." + getExtension();
         } else return "";
     }
 
@@ -148,6 +152,7 @@ public class Map {
         return uploadDate;
     }
 
+    @JsonIgnore
     public String getShortDate() {
         return (new SimpleDateFormat("dd/MM/yyyy")).format(uploadDate);
     }
@@ -190,6 +195,7 @@ public class Map {
         return false;
     }
 
+    @JsonIgnore
     public String getTagsAsString() {
         if (tags.isEmpty()) return "";
 
