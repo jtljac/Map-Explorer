@@ -39,10 +39,12 @@ venv/
 ### VS Code ###
 .vscode/
 
+# Docker
+Docker/
+
 # The maps
 /maps/
 
 # Cache from image comparison
 Scripts/cache/
 Scripts/results.json
-mysql.properties
