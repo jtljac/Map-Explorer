@@ -299,6 +299,7 @@ public class ImageApiController {
     }
 
     @GetMapping(value = "/api/foundry/{id}")
+    @CrossOrigin
     @ResponseBody
     public ResponseEntity<MapFoundry> foundry(HttpServletRequest request, @PathVariable("id") int id) throws MalformedURLException {
         Optional<Map> map = mapRepository.findById(id);
