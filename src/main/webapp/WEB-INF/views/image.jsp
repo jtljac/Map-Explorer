@@ -9,13 +9,13 @@
         <script type="text/javascript" src="JS/menu.js"></script>
         <script type="text/javascript" src="JS/imagePage.js"></script>
         <script src="JS/navbar.js"></script>
-        <title>${map.getNameWithoutExtension()}</title>
+        <title>${map.getName()}</title>
     </head>
     <body>
         <%@ include file="navbar.jspf" %>
         <main class="imageOpenWrap">
             <div id="headerWrap">
-                <h1>${map.getNameWithoutExtension()}</h1>
+                <h1>${map.getName()}</h1>
                 <div class="kebab">
                     <button id="optionsButton"><span class="material-icons md-light">more_vert</span></button>
                     <div id="optionsContent" class="kebabContent"></div>
